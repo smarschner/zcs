@@ -1,0 +1,77 @@
+Assignment 4: methods, and more strings
+
+Read Gries & Gries Chapter 2, up through 2.3.7.  They are doing things in a slightly different order so a few things might seem unfamiliar; that is OK.
+
+Before we get started, let's set up something that every real software project uses: a source code repository.  This is a place to keep source code where it is easy for multiple people to work on it from different computers, and on a server that keeps it safe and keeps track of all old versions so you can get them back if you mess something up.  We'll use GitHub, because it's the most popular and it's free to create a small repository there.
+
+Step 1: go to github.com and make yourself an account.
+Step 2: let me know the user name so I can give you write permission to our project.
+Step 3: In Eclipse, File -> Import -> Git -> Projects from Git
+   Next -> Clone URI
+   Under URI enter the URL of the repository I made: https://github.com/smarschner/zcs.git
+   Click through the rest of the pages leaving the defaults, then hit Finish.
+
+You should see a new project called "zcs [zcs master]".  This stuff in brackets indicates this is connected to a Git repository.  You should see the same stuff as in the HelloWorld project, plus some new stuff.
+
+The way Git works is you _clone_ a repository, which makes a copy on your computer; you edit that copy, creating, removing, and editing files in Eclipse, and then you _commit_ the changes and _push_ them back to the repository.  When you want to get the latest changes you _pull_ them from the repository.  So from now on I'll send you files for assignments by pushing them to GitHub, and you'll pull them; then you send me back your solutions by pushing them to GitHub and I'll pull them.  You can find "Commit" (which can also do a push) and "Pull" in the Team menu, under the context menu that you get by right-clicking on the project.
+
+Lots to get confused about here so you might need to ask.  Other confusing things can happen when we both change things at once, which we'll have to deal with eventually.  But this is definitely the way to work on software when more than one person is involved (or even if there's just one, since it keeps track of changes so nicely).  Once you have your copy of the zcs repository, do your work there and we can stay in sync.
+
+So a method declaration looks like:
+
+<optional _specifiers_> <return type> <method name>(<var-decl>, <var-decl>, ...) {
+	<statement>;
+	<statement>;
+	...
+}
+
+Now we can finally understand the declaration of the main method that Eclipse made for us back when we created the HelloWorld class.
+
+public static void main(String[] args) {
+	System.out.println("Hello World!");
+}
+
+"public" and "static" are specifiers that tell what kind of method (more on these when we get to classes).
+"void" is the return type.  It means this method doesn't return anything; Gries & Gries call this a "procedure".
+"main" is the name of the method.  It can be anything that is allowed to be a name, just like a variable name.
+"String[] args" is a variable declaration that creates a variable named "args" whose type is "String[]" which means it is an array of strings (more on arrays in a bit).
+The part between the braces is the _body_ and in this case it consists of just one statement, which is a call to the method System.out.println.
+
+What is cool about methods is that you can use them to organize your code and get rid of repetetiveness.  To illustrate that with an exercise: in your class that does cat food calculations, you have some repeated code, because you are getting two different dates from the user.  For instance, you often write out a prompt, then read a string from the user.  We could wrap this commonly occuring pair of statements in a method:
+
+	String getInput(String prompt) {
+		System.out.print(prompt);
+		String userResponse = InputReader.getLine();
+		return userResponse;
+	}
+
+Then we can just write, for instance:
+
+    String monthName = getInput("What month were you born? ");
+
+Make a method like this and change your program so that it uses it wherever it should.  Doesn't that make it neater?
+
+Now you are still repeating the sequence of getting a month, a day, and a year, then parsing the date.  Make a method with this header:
+
+    Date getDate(String prompt)
+
+that reads the three parts from the user, parses the date, and returns it.  You'll have to add a throws declaration because of the possibility of a ParseException, but Eclipse can do that for you.  (More on exceptions somewhat later....)
+
+Use that method wherever you can in your program ... doesn't it end up even shorter and neater?
+
+Next, take a look at this CS1110 lab: 
+    http://www.cs.cornell.edu/Courses/cs1110/2011fa/handouts/labs/lab04methods.pdf
+
+You'll find the Methods class is already in the repo under zcs.asgn4.
+
+The lab asks you to implement a bunch of methods that work with strings.  But how are you supposed to konw whether your methods work?  You could keep modifying your HelloWorld program by putting stuff into the main() method to call your string methods and print out what they return.  But there is a better and more organized way to do this.  This lab uses JUnit, a package for making _unit tests_.  A unit test is just a piece of code whose sole purpose in life is to test some other piece of code to make sure it works right.  The great thing about unit tests is that you can keep them, and if you change code later you can re-run them to make sure it all still works right; I catch zillions of bugs this way that I'd otherwise have to chase down later when I'm not sure where they are.
+
+Anyway, I already created the JUnit test case it asks you to create -- it's called MethodsTest, and it contains test cases for the first couple of the string methods.  You run the tests in the same way you run a program, except you say "Run As..." -> "JUnit Test" instead of "Java Application".  Eclipse even has a pane that keeps track of all the errors.  I think you'll get the idea of how to write these tests from the examples that are there...
+
+See if you can do the rest of them, and write test for them all!  You'll need to use the conditional expression for a lot of things here, and creating variables to hold your intermediate results is very useful.
+
+Another useful resource is the official documentation for the String class:
+
+    http://docs.oracle.com/javase/8/docs/api/java/lang/String.html
+
+This documentation is a bit overwhelming at first, but it is very useful because it's the ultimate reference on what all the classes in the Java library do.  You can explore the API documentation a bit ("API" is for "Application Program Interface" -- all the classes and methods that are meant to be used by you and me, who are writing "application programs"); it goes on endlessly for miles in all directions :-).  For instance, click on "Package" at the top to see all the classes in the same package as String (it is in java.lang, where other fundamental classes like Math, System, Integer, etc. also live).

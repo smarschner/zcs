@@ -1,0 +1,127 @@
+Assignment 2. Expressions and Conversions
+
+[I'm going to use _term_ to introduce terms instead of quotes like the last one, so I can use quotes to actually quote things!...]
+
+First a digression on the Hello World program.  What is all that mumbo jumbo?
+
+-----
+/* Everything in Java has to be inside a class, so we have this one class.  
+ * "class Hello" just means we are defining a class here that is named Hello, 
+ * and everything between the open-brace following the name and the matching 
+ * open-brace at the end is the class definition.  The word "public" tells what 
+ * kind of class; when we get to classes and objects we'll learn about public 
+ * and private and why you would care. */
+public class Hello {
+	
+	/* The Hello class contains only one thing.  It's a _method_ whose name is "main".
+	   When you ask Eclipse to "Run as Java Application", what it does is look for a 
+	   method called "main" and run it.  The rest of the stuff here is just to make it
+	   the right kind of method so that the system will be happy with it.  It has to
+	   be public so that Eclipse can see it; static and void make it the simplest kind
+	   of method; and the "String args[]" parts is saying that the system could give
+	   us some input that would be a bunch of strings -- but we don't need that right 
+	   now so we can ignore it. */
+	public static void main(String args[]) {
+
+		// This line says "look in the System class, find the thing called 'out', and
+		// ask it to print the following string." As you noticed, the "ln" means that
+		// it will put a newline at the end, so that the next output would start on 
+		// the following line.
+		System.out.println("Nice work on Assignment 0!");
+	}
+
+}
+-----
+
+You'll notice I am putting English text in the program, and I didn't put it in quotes to ask Java to make it a string -- why is it not trying to understand my sentences as Java code?  You might guess it has something to do with the slashes and stars, and you'd be right.  These are _comments_, and Java supports two kinds. You can start a comment with /*, and then everything after that, for lines and lines, until you write */, is a comment, which is ignored by the Java compiler.  Sometimes people like to format the comment with *s down the margin just to look pretty, but Java doesn't care.  The other kind of comment starts with // and ends at the end of the line.  Usually you use the // comments for short ones and the /* ... */ comments for longer ones, but it doesn't really much matter.
+
+Comments are really useful because they let you write down what you are thinking, which is super helpful to you and anyone else who wants to understand your code.  More on them later.
+
+You can also use comments for "commenting out" code: if you want to temporarily remove a line of code, just put // at the beginning, and now it's a comment, not part of your program.  Much better than deleting it because you can get it back really easily without keeping track of it somewhere else.
+
+OK, on to the main part.
+
+Same instructions as the previous assignment, except the last part.
+
+In an expression, you sometimes have one type and want an equivalent value of another type.  You ask Java to convert by using a _type cast_ written by putting the type you want in parentheses before the expression you want to convert.
+
+*** (double) 4
+*** (int) 4.0
+*** 1 / 4
+*** (double) 1 / (double) 4
+
+Some of these conversions will lose information, since you might be converting to a type that can't represent the value that you have.
+
+*** (int) 4.3
+*** (int) 4.9
+*** (int) -4.1
+
+When converting a double to an int, Java throws out the fractional part, without doing any kind of sensible rounding.  But we have our Math functions to get the rounding we want.
+
+In Java, a type that can hold more values (like double can hold many values that int cannot) is called _wider_ and one with fewer values is called _narrower_.  A conversion that loses information is a "narrowing conversion" and one that doesn't lose information is a _widening conversion_.  Java will do widening conversions automatically without being asked, but has to be asked if you want a narrowing conversion.
+
+When would it decide to convert something on its own, you ask?  When you ask it to do an operation that doesn't make sense with the types you have, it will automatically convert narrower types to wider types so that it does make sense.  For instance, if you ask Java to add an int and a double:
+
+   4.0 + 1
+
+it can't do that directly -- it only has the ability to add two ints or add two doubles.  So it silently makes the widening conversion, exactly as if you'd written
+
+   4.0 + (double) 1
+
+and does the operation as a floating-point addition.
+
+*** 4.0 + 1
+*** 6.5 + 3
+
+The common case where this makes a big difference is with division, which as we've seen is quite different between integer and floating-point types.
+
+*** 1.0 / 4
+*** 1 / 4.0
+*** 1 / 4
+*** 1 / (double) 4
+*** 8/29/2001.
+*** 8./29/2001
+
+Or we might want to add two integers but be sure of getting the right answer by using long addition.
+
+*** 2000000000 + 2000000000
+*** 2000000000 + (long) 2000000000
+
+Java also does some automatic conversions with strings, using the same philosophy.  If you ask it to concatenate an int with a string, it can't do that, but it can convert the int to a string and then do it:
+
+*** 81 + " Balloons"
+*** "Area " + 51
+*** 42 + "29"
+*** "" + 3 + 5 + 6
+*** 3 + 5 + 6 + ""
+
+It also automatically converts to a string when you pass a value to a function like System.out.println that needs a String.  So we have really been secretly using automatic string conversion all along, whenever we print out something that isn't already a string.  It's kind of neat that Java has a way to convert absolutely anything to a string -- though it might not always do the conversion the way you want!
+
+OK, let's write something a little bit complicated that uses several types.  There's a function System.nanoTime that will give you the current time measured in nanoseconds; it's good for measuring how long things take that happen in a hurry.  
+
+*** System.nanoTime()
+*** System.nanoTime() - System.nanoTime()
+
+This measures the small interval between the moment when Java evaluates the first part of your expression and when it evaluates the second part.  Does the sign of the result make sense to you?  
+
+I'd like it to write out a message that reads like this:
+
+   That took about one 37392th of a second!
+
+This means taking that time difference, computing it as a fraction of a second (e.g. 100 million nanoseconds would come out as "one 10th"), rounding it, and sticking it into a string.  For this part just put your finished expression, and its output, into the email.
+
+I also want to introduce one last operator, a kind of unique one.  It's called the _ternary opertor_ or _conditional operator_ because it is the one operator in Java that operates on *three* expressions, and it evaluates does different things under different conditions.  It looks like this:
+
+   (boolean expression) ? (expression 1) : (expression 2)
+
+(the parentheses are just for clarity, they're not part of the operator itself.)  When Java evaluates this operator, it first evaluates the boolean expression, and if that comes out true, it evaluates expression 1; otherwise it evaluates expression 2.
+
+*** true ? 29 : 42
+*** false ? 29 : 42
+*** (3 > 4) ? "3 is bigger!" : "3 is smaller!"
+
+You can do a lot with the conditional operator; of course there's not much point in it when you have a constant expression like "3 > 4" in the condition.  The point is when you have a condition that could change:
+
+*** (System.currentTimeMillis() < 1466975608909L) ? "It's before Saturday around 5:13 pm" : "It's after Saturday around 5:13 pm"
+
+

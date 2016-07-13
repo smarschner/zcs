@@ -1,0 +1,33 @@
+Assignment 5: Defining classes
+
+Methods are one of the tools for organizing programs.  Classes are another tool, and maybe the most important one.  You really need to understand how classes work before you can read and understand any real Java code.
+
+Start by reading Chapter 3 and doing the self-review exercises, but not the exercises at the end (though you can look at them if you like).
+
+Then the first three assignments from CS1110 make a nice exercise in defining and understanding classes.  
+
+So first, do Assignment 1 from CS1110, using the handout in this directory (a1.pdf, which is marked up to delete a bunch of stuff that doesn't apply).
+
+Next, get a lesson from your professor on how to draw instances of classes, including static methods and variables.
+
+After you finish A1, do exercise A at the end of this file, which is a version of CS1110 A2.  Just hand that one in on paper.
+
+Finally, do CS1110 A3.
+
+Then, do exercise B at the end of this file, which is similar to A2 but for methods.
+
+Then you are done with Assignment 5!
+
+-----
+
+Exercise A:
+
+Take a look at the three classes defined in the file Asgn5ExerciseA.java in this directory.  Draw the classes that result from these class definitions.  (Just the classes at this point, not any instances.) This means you have three boxes representing the three classes, which show what goes in the "file drawer" for each class.  They might contain some methods or variables, or nothing in some cases.  Include a file drawer for the Object class that has just the method toString().
+
+Now suppose this class is run as an application, so that the main method is executed.  Draw the frame for main() and all the objects that are referenced by the variables in that frame.  For this assignment, be sure to include the partitions for all superclasses, including the class Object (even though we often leave that one out in practice).
+
+-----
+
+Execrise B:
+
+Take a look at the classes in Asgn5ExerciseA.java.  Simulate the execution of main() for yourself, and make neat drawings of the situation that exists each time execution reaches line 27.  What is the output of this program?

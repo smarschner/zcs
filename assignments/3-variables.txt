@@ -1,0 +1,151 @@
+Assignment 3. Variables
+
+
+Now we know a lot about expressions.  They are very important to writing programs, but you can't do that much, really, with only expressions ... the problem is your program can't remember anything it computed.
+
+In java you can store values in _variables_, which are like little storage boxes labeled with a type so that Java knows what kind of value goes in the box.  You create a variable with a _variable declaration_, which looks like this:
+
+int ageOfCat;
+float weightOfCat;
+
+You can _initialize_ variables when you declare them, like this:
+
+int ageOfCat = 14;   // just about the same as Z!
+float weightOfCat = 9.3;  // in pounds
+
+(Note the single =, as opposed to the double == for the equality operator.)
+
+You can think of this _variable declaration_ as drawing a box on a piece of paper, labeling it with a name and a type, and writing a value in it.  (There are some rules about what is allowed to be the name of a variable.  Basically, use letters, numbers, and _, and start with a letter.)
+
+Once a variable has a value, you can use it in an expression just like you would any other value.
+
+    int numberOfDays = 63;   // length of trip in days
+    double servingSize = 0.5;   // how much wet food legs eats in a day
+    System.out.println("We need to pack " + Math.ceil(numberOfDays * servingSize) + " cans");
+
+When Java is evaluating an expression and it runs across a name, it looks around for a variable with that name, and if it finds one, it uses its value.  If it can't find a variable with that name, it is a compile-time error.
+
+Try pasting those three lines into the main method of the Hello World application, and you can probably predict what it will write out.
+
+To make some more interesting programs here is a useful thing.  Create a new class called InputReader, ask it to put it in the package zcs.util, and paste the Java source code below into InputReader.java.  This defines a class that does a nice job reading input that you type into the Eclipse console.  (It comes from System.in, which is analogous to System.out, but it uses that BufferedReader thing so that it can neatly read to the end of a line and then return.)  To use this class, we create an _object_ of this class by using a _new-expression_.  It looks like this:
+
+*** new InputReader()
+*** new InputReader()
+
+In order to make this work, you have to tell Java where it is supposed to find that class InputReader, by adding the line:
+
+    import zcs.util.InputReader;
+
+at the top of your file, above the class definition.
+
+Then once we have an object, we can call its methods in a way that is by now familiar from calling the methods of System. things:
+
+    InputReader ir;   // Declare a variable that holds an InputReader
+    ir = new InputReader();   // Create a new InputReader and store it in that variable
+    System.out.print("Enter your name: ");
+    String userName = ir.readLine(); 
+    System.out.println("Well hello, " + userName + "!");
+
+Give that one a try (by pasting all four lines into your main method and the import statement at the top of your file).  Does it do what you expect?  Try printing out the value of ir.
+
+Now a little programming exercise.  Make a program that asks you how long your trip is and the serving size of your cat food, and tells you how many cans to pack.  You might find the following expressions helpful:
+
+*** Integer.parseInt("42")
+*** Double.parseDouble("4.2")
+*** Integer.parseInt("4.2")
+*** Double.parseDouble("hello")
+
+This one is interesting enough to save, so make a new class with some appropriate name, and put the code in the main() method for that class.  You can run it by right clicking on the class in the Package Explorer on the left and choosing "run as -> java application" or by using the little menu to the right of the green Run button at the top.
+
+Now let's make it even better by playing with a couple of classes from the Java library.
+
+*** new Date()
+*** new SimpleDateFormat()
+
+When you paste these into your HelloWorld program you'll notice it complains that the class names "cannot be resolved to a type".  This means it can tell you are trying to use it as a type (because it's in a new-expression) but it can't find a definition for that type.  The solution is an import statement at the top of your file, but you might not know what package it is in.  Fortunately Eclipse is smart about this -- if you hover over the underlined text, it offers a number of fixes, and the first ones are about importing the class from some package.  In the case of SimpleDateFormat, there is only one option, in the java.text package.  If you click that suggestion it will take care of it by putting "import java.text.SimpleDateFormat" somewhere near the top.  In the case of Date you want to go for java.util.Date, not the sql one.  Then you can evaluate the expressions.
+
+Do these together:
+
+*** System.getTimeMillis()
+*** new Date().getTime()
+
+This getTime() thing is useful for computing differences between times.
+
+SimpleDateFormat lets you get dates by converting them from Strings. It has a zillion ways to do this, but a simple one goes like this:
+
+*** new SimpleDateFormat("MMMM dd, yyyy").parse("August 29, 2001")
+*** new SimpleDateFormat("MMMM dd, yyyy").parse("August 29, 2001").getTime()
+*** new SimpleDateFormat("MMMM dd, yyyy z").parse("January 1, 1970 GMT").getTime()
+*** new SimpleDateFormat("MMMM dd, yyyy G").parse("August 29, 2001 BC").getTime()
+
+Each of these creates a new SimpleDateFormat and uses it just once, then throws it away.  If you assign it to a variable you can keep it and use it for several operations:
+
+    SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
+    System.out.println(sdf.parse("August 29, 2001"));
+    System.out.println(sdf.parse("November 29, 1971"));
+    String s = sdf.format(new Date());
+    System.out.println("Today is " + s);
+
+Next exercise is to make a program that asks the user their birthday and then computes their age. 
+
+Then the last one for this assignment is to take the first exercise and make it so that it asks you for the departure and return dates of your trip, and the rate at which your cat eats cat food, then tells you how many cans to pack.
+
+Addendum on assigning :
+
+I forgot one thing about assignment that's important, and is illustrated by some examples.  Do the same old guess-and-text method on these, except this time it's the whole block of code (between the [[[ and ]]]) that gets tested rather than a single expression.
+
+[[[
+int n = 3;
+n = 5;
+System.out.println(n);
+]]]
+
+[[[
+int y = 29;
+int x;
+x = y;
+System.out.println("x == y is " + (x == y));
+y = 42;
+System.out.println("x == y is " + (x == y));
+System.out.println("y is " + y + "; x is " + x);
+]]]
+
+[[[
+int a = 3, b = 4, c = 5;
+a = b = c;
+System.out.println("a is " + a + "; b is " + b + "; c is " + c);
+b = 29;
+System.out.println("a is " + a + "; b is " + b + "; c is " + c);
+]]]
+
+How is Java evaluating a = b = c?  Is it (a = b) = c or a = (b = c)?  What is the value of the expression x = 2?
+
+
+------
+package zcs.util;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class InputReader {
+	
+	BufferedReader br;
+	
+	public InputReader() {
+		br = new BufferedReader(new InputStreamReader(System.in));
+	}
+	
+	public String readLine() {
+		try {
+			return br.readLine();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+}
+-----
+
+
+

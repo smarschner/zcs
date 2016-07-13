@@ -1,0 +1,257 @@
+Assignment 1. Values and Expressions
+
+In this assignment you learn about values and expressions by evaluating a lot of expressions to see what values result.  Each line starting with *** is an expression for you to evaluate.  First, guess what value will result from evaluating the expression, and write it after the expression.  Then paste the expression into your your Hello World program, replacing the "Hello Zoë" message (replace the whole thing including the quotes), run the program, see what it prints out, and put that after your guess.  If they are different, say why you think it did what it did (you sometimes might not know, that's OK).  For instance:
+
+*** 6 * 7, 48, 42 (I guessed 48 because I forgot my multiplication table!)
+
+Some of the expressions result in errors, either "compile time errors" that prevent Java from even running your program at all, or "runtime errors" that only happen after you run the program.  In that case just write "compile time error" or "runtime error" and remark on why it's an error.
+
+Don't worry about guessing wrong -- that is the interesting part.  Also know that I have written this pretty fast-paced and you should not be surprised to have to puzzle over some parts.
+
+To turn in the assignment, email me all the lines from your file where you wrote a comment (because there was an error, because Java took you by surprise, or any other reason).
+
+OK, here we go.
+
+Every value that a Java program can think about has a "type".  For instance, integers can be represented by values of the type "int". 
+
+The simplest way to create a value of type int is to write an "integer literal."  An integer literal is just a sequence of digits: 8, 29, or 2001.  You can put a minus sign in front to make a negative number: -29.  
+
+*** 29
+*** -11291971
+*** 1000000000
+*** 10000000000
+*** 029
+
+You can also write "expressions" in which you use "operators" to compute values from other values.  For integers, the familiar arithmetic operations are available, and they pretty much follow the same PEMDAS operator precedence rules you learned in math class.
+
+*** 4 + 3 + 12
+*** 4 * 4 + 3
+*** 3 + 4 * 4
+*** (3 + 4) * 4
+*** 4 - 12
+*** -4 - -12
+*** -4 - -4 - -4
+*** -4 + 5
+*** -(4 + 5)
+
+That minus sign you put in front of things is called a "unary operator" (since it operates on only one value, as opposed to the other ones which are binary operators).  You'll notice it has a higher precedence than the arithmetic operators, which I guess is the same as in math class.
+
+Java doesn't care what you do with white space between things, though it does matter whether space breaks up multi-character tokens (like integer literals) that would mean something if they were not separated.
+
+*** 3+4*4
+*** 3 +
+4 * 4
+*** 4 - 1 2
+*** -4--12
+*** -3-   - - -   4
+*** 4 * 3+4
+
+It's not good form to use random and confusing spacing though, because even though the compiler doesn't care it will confuse people (including you!) who are reading the code.  I usually put spaces around most operators, but not inside parentheses.  But people's styles vary, and some people like "(3+4)*2" or "( 3 + 4 ) * 2"
+
+There is also division for integers:
+
+*** 12 / 4
+*** 13 / 4
+*** 15 / 4
+*** -15 / 4
+*** 15 / -4
+*** 12 % 4
+*** 13 % 4
+*** 15 % 4
+*** -15 % 4
+*** 15 % -4
+*** 4 * (123 / 4) + 123 % 4
+*** 4 * (-123 / 4) + -123 % 4
+*** 10 / 0
+
+The int type only goes up to about 2 billion, which is usually plenty.  But not always.  There is another integer type called "long" that is able to store larger numbers.  You make an int literal into a long literal by putting an L (or l) on the end.
+
+*** 1L
+*** 1000000000000L
+*** System.currentTimeMillis()
+
+This last one is a function that returns the current time, expressed as the number of milliseconds since January 1, 1970.  That's more than my age in milliseconds -- billions and billions for sure.
+
+There are some other integer types that are shorter than int, and ways to write integer literals other than in decimal, but let's not worry about them for now.
+
+The other kind of numeric type is what's called a "floating-point number."  These represent real numbers, though they can't represent all real numbers exactly, since there are only finitely many floating-point numbers that can exist.  You can write floating-point literals as numbers that contain a decimal point:
+
+*** 4.0
+*** 1.
+*** 0.1
+*** .4
+*** 40000000000.0
+
+You can also write floating-point literals in scientific notation, using the letter "e" to introduce the exponent.  For instance, five billion is 5 x 10^9, and in Java you would write "5.0e+9" or just "5.0e9" or even "5e9" (the e is enough of a hint for Java to tell it is a floating point literal).
+
+*** 2.9e1
+*** 29e0
+*** -3.4e-3
+*** -3.4e-4
+*** 10e2
+
+You'll notice you can tell whether Java is printing out an integer or a floating-point number because it will always include a decimal point in the latter case.  Also, it takes the liberty of switching to scientific notation for the printout when then numbers get too big or too small, but that's just a change in how it writes it out, not anything fundamental about the value itself.
+
+There are arithmetic operations for floating-point also, though they work a little differently.
+
+*** 12.0 / 4.0
+*** 13. / 4.
+*** 10. % 4.
+*** 10.25 % 4.
+*** 10.0 / 0.0
+*** -10.0 / 0.0
+*** 0.0 / 0.0
+
+These last ones explore the three special floating-point values that are not exactly numbers: infinity and minus infinity, and "not a number".
+
+Java can deal with two kinds of floating-point numbers: single precision, which is accurate to about 6-7 significant figures, and double precision, which is accurate to about 15-16 significant figures.  Even though this seems like a lot of precision, it's easy to get into situations where you'll notice the approximation errors, and you have to keep the approximate nature of floating point numbers in the back of your mind when you are using them.
+
+*** 100.1 - 100.0
+*** 1 + 1e-14
+*** 1 + 1e-17
+
+From this last bit you may be able to guess which of the two kinds of floating-point numbers you are using.  The Java types for the two different precisions are "float" and "double"; when you write a plain literal like "1.0" you get a double; if you want a single-precision float you can add an f to the end, like "1.0f".
+
+*** 100.1f - 100.0f
+*** 1.0f + 1.0e-6f
+*** 1f + 1e-8f
+
+Doubles can represent really large and small numbers, but there are limits.
+
+*** 1e100 * 1e100
+*** 1e100 * 1e100 * 1e100 * 1e100
+*** 1e400
+*** 1e-300 / 100
+*** 1e-300 / 1e100
+
+Of course the limits for floats are more, well, limited.
+
+That's all for now about numeric types.  Some things are missing from the set of operators you might like to have.  For instance, there is no exponentiation operator; you can't directly talk about something squared, or raised to the 10th power.  There are no literals for infinity or not-a-number.  These things are all available in some classes that are built into Java.  Each type has a corresponding class (which has a capital-letter name) where you can find some handy constants and functions:
+
+*** Integer.MAX_VALUE
+*** Long.MAX_VALUE
+*** Integer.MIN_VALUE
+*** Float.MAX_VALUE
+*** Double.MAX_VALUE
+*** Double.POSITIVE_INFINITY
+
+and so on.  There is also a class called Math, which has most of the math operations you would ever want:
+
+*** Math.pow(3.0, 4.0)
+*** Math.pow(3.0, -4.0)
+*** Math.PI
+*** Math.cos(0.0)
+*** Math.cos(Math.PI / 2.0)
+*** Math.sin(Math.PI / 2.0)
+*** Math.floor(4.3)
+*** Math.floor(-4.5)
+*** Math.floor(4.8)
+*** Math.round(4.3)
+*** Math.round(-4.5)
+*** Math.round(4.8)
+*** Math.ceil(4.3)
+*** Math.ceil(4.8)
+*** Math.ceil(-4.5)
+
+The third type to learn about in this assignment is called "boolean", and it is a really simple type, but with a lot of subtlety.  A boolean value always takes one of two values, true or false.  Those words are the two Boolean literals, and you're not allowed to use them for anything else in your program; they are "reserved words".
+
+The boolean type has operations too, but they're logic operations rather than arithmetic operations.  The operators for "and" and "or" are && and ||, and these work kind of like * and +, with && having precedence over ||.
+
+*** true && true
+*** true && false
+*** true || false
+*** false || false
+*** true && false || true
+*** true && (false || true)
+
+There is also the negation or "not" operator, written as !.  This works kind of like - for numeric types, and it has precedence over && and ||.
+
+*** !false
+*** !false || false
+*** !(false || false)
+
+You rarely write literals for booleans, though; usually you get them from comparison operators. There are six: > and <; >= and <= for "greater than or equal to" and "less than or equal to"; == for equal and != for not-equal.  Notice that equality is a double equals sign -- very important!  A single equals sign means something different (and we'll get to that soon).
+
+*** 3 > 4
+*** 6 > 5
+*** 4 > 4
+*** 4 == 4
+*** 4 >= 4
+*** -3 < 6
+*** 1e100 > 1.0
+*** Double.NEGATIVE_INFINITY < 29.0
+*** Double.MAX_VALUE < Double.POSITIVE_INFINITY
+*** !(3 > 4)
+*** !3 > 4
+*** 3 > 4 && 6 > 5
+*** 3 > 4 || 6 > 5
+
+Notice that I don't need parentheses on those last two because the comparison operators have a higher precedence than the logical operators.  But remember && and || don't have the same precedence.
+
+*** 3 < 4 && 4 > 5 || 2 < 3 && 5 < 6
+*** 3 < 4 || 4 < 5 && 2 > 3 || 5 > 6
+
+Here is something interesting:
+
+*** 1/0 > 3 && 1/2 < 0
+*** 1/2 < 0 && 1/0 > 3
+*** 1/0 > 3 || 4/2 > 0
+*** 4/2 > 0 || 1/0 > 3
+
+You can compare booleans for equality too:
+
+*** true == false
+*** true != false
+*** (3 > 4 || 3 == 4) == (3 >= 4)
+*** !(3 == 4) == (3 != 4)
+
+Notice that I start to need parentheses here, otherwise it starts to not mean what I wanted:
+
+*** 3 == 4 == 3 == 4
+
+You're starting to see that Java has a lot of operators, so the precedence rules are more complicated (or at least there are more of them to know) than with regular math.  Maybe we should make up a mnemonic acronym like PUMDASCAO for parentheses, then unary operators, then multiplication/division, then addition/subtraction, then comparison operators, then logical and, then logical or.  But you can't go wrong by putting in extra parentheses to make sure your expression means what you want it to mean.
+
+A question to ponder: since a boolean binary operator (like && or ||) takes in 2 boolean values, there are four possible combinations of inputs.  The operator has to return either true or false in each of those 4 cases, so it seems like there are 2^4 possible boolean operators.  Is this right?  Does Java have all the possible logical operations?
+
+The final basic type in Java is called String.  We used that one already in the previous assignment, so you can already guess what a string literal looks like.
+
+*** "Inigo Montoya"
+*** "Zoë"
+*** "29"
+*** "4 + 3"
+*** "Don't read this"
+*** "You killed my father. Prepare to die!"
+*** "#*@&^@!(@$&"
+*** ""
+
+When you put some text between double-quotes, you're telling Java "don't look at this, just put it in a string for me".  String literals in Java can contain any Unicode characters, so you can put dots on your E, you can put Japanese text in there, Emojis, whatever you want.  The same goes for the Java source code itself.  But it's pretty unusual to see anything other than plain old ASCII characters.
+
+There are a couple of things that are tricky to get into a string literal, because the syntax won't let you do it the obvious way:
+
+*** "Inigo said "Prepare to die," and the Count ran."
+*** "I took the road less traveled by
+And that has made all the difference."
+
+To solve this problem Java has some secret codes you can type into your string literals to get double-quotes and newlines into your strings: they are two-character escape codes that start with a backslash: backslash-quote for a quote, and backslash-n for a newline.
+
+*** "\""
+*** "\n"
+*** "Inigo said \"Prepare to die,\"  and the Count ran."
+*** "I took the road less traveled by\nAnd that has made all the difference."
+
+This now creates a new problem: how can I put a backslash followed by a double quote into my string, if that is what I want?  The solution is more escape codes: "\\" puts a backslash into your string.  Can you figure out how to write a string literal that causes exactly the following line to appear when you print it?
+
+   In Java you have to write "Inigo said, \"Prepare to die.\""
+
+String also have some operations you can do with them.  Well, maybe just one.  You can concatenate them using the + operator:
+
+*** "foo" + "bar"
+*** "Hello" + " " + "Zoë" + "!"
+*** "4" + "3"
+*** "Yikes" + "" + "" + "" 
+
+OK, that's it for values and expressions, for now.  You know the most commonly used types in Java: int, double, boolean, and String, and how to write expressions involving operations bewteen values of the same type.  There is some more to know about how Java evaluates expressions when you mix different types, then you will know what you need to to start writing some useful programs!
+
+
+
+
