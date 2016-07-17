@@ -11,7 +11,7 @@ So first, do Assignment 1 from CS1110, using the handout in this directory (a1.p
 Next, get a lesson from your professor on how to draw instances of classes, including static methods and variables.
 
 After you finish A1, do exercise A at the end of this file, which is a version of CS1110 A2.  Just hand that one in on paper.
-
+`
 Finally, do CS1110 A3.
 
 Then, do exercise B at the end of this file, which is similar to A2 but for methods.

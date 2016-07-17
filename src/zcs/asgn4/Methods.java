@@ -64,7 +64,7 @@ public class Methods {
     		String hs = s.substring(0,2);
     		int h = Integer.parseInt(hs);
     		// Here you can write "h > 12 && h != 24"
-    		if(h>12 && (!(h==24))){
+    		if(h>12 && h!=24){
     			String u = s.substring(0,2);
     			int ui = Integer.parseInt(u);
     			ui = (ui-12);
