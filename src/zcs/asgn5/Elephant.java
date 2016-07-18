@@ -10,6 +10,7 @@ public class Elephant {
 		private Elephant mother; //object of class Elephant that is mother of object null=unknown.
 		private Elephant father; //object of class Elephant that is father of object null=unknown.
 		private int children; //# of children of this Elephant (based on the mother and father).
+		private static int population; //total number of elephants created
 		
 		//Constructor: a new Elephant with nickname n, birth year y, birth month m, and gender g. 
 		//Its parents are unknown, and it has no children.
@@ -19,6 +20,7 @@ public class Elephant {
 			yearofbirth= y;
 			monthofbirth= m;
 			gender= g;
+			population= population + 1;
 		}
 		
 		//Constructor: a new Elephant with nickname n, birth year y, birth month m, gender g, 
@@ -37,6 +39,8 @@ public class Elephant {
 			
 			father= pa;
 			pa.children= pa.children + 1;
+			
+			population= population + 1;
 		}	
 		
 		//= this Elephant’s nickname
@@ -56,7 +60,7 @@ public class Elephant {
 		
 		//= "this Elephant is a boy"
 		public boolean isMale(){
-			return gender=='b';
+			return gender=='B';
 		}
 		
 		//= this Elephant’s tag (>= 0; -1 if one)
@@ -79,6 +83,11 @@ public class Elephant {
 			return children;
 		}
 		
+		//= the population count
+		public static int getPopulation(){
+			return population;
+		}
+		
 		//Set this Elephant's tag to n. Precondition: n >= 0.
 		public void setTag(int n){
 			tag= n;
@@ -96,6 +105,46 @@ public class Elephant {
 		public void addFather(Elephant e){
 			father= e;
 			e.children= e.children+1;
+		}
+		
+		//= “e is not null and e is this elephant’s mother”
+		public boolean isMother(Elephant e){
+			return e!=null && mother==e;
+		}
+		
+		//= “e is not null and e is this elephant’s father”
+		public boolean isFather(Elephant e){
+			return e!=null && father==e;
+		}
+		
+		//= “e is not null and e is this elephant’s parent”
+		public boolean isParent(Elephant e){
+			return e!=null && (isMother(e)==true || isFather(e)==true);
+		}
+		
+		//= “e is this elephant’s sister”. Precondition: e is not null.
+		public boolean isSister(Elephant e){
+			return this!=e && (e.isMale()==false) && 
+					(getMother()==e.getMother() || getFather()==e.getFather());
+		}
+
+		//= “e is f’s sister”. Precondition: e and f are not null.
+		public static boolean isSister(Elephant f, Elephant e){
+			return e.isSister(f);
+		}
+
+		//= “e is younger than f”. Precondition: e and f are not null.
+		public static boolean isYounger(Elephant e, Elephant f){
+			return (e.getYear()*12+e.getMonth()) > (f.getYear()*12+f.getMonth());
+		}
+		
+		//= a string with information about the elephant
+		public String toString(){
+			return (isMale() ? "Male elephant " : "Female elephant ") + nickname + "." + 
+				((tag==-1) ? "" : (" Tag " + tag + ".")) + " Born " + monthofbirth + "/" + yearofbirth +
+				"." + (mother== null ? "" : (" Mother " + mother.getName() + ".")) + 
+				(father== null ? "" : (" Father " + father.getName() + ".")) + (children== 1 ? 
+				(" " + children + " child") :  (" " + children + " children")) + ".";
 		}
 		
 		
