@@ -18,7 +18,7 @@ public class MethodsTest {
 	
 	@Test
 	public void testToAMPM() {
-		assertEquals("12:00 AM", Methods.toAMPM("24:00"));
+		assertEquals("12:00 AM", Methods.toAMPM("0:00"));
 		assertEquals("4:13 AM",
 				Methods.toAMPM("4:13"));
 		assertTrue("4:13 AM".equals(Methods.toAMPM("4:13")));

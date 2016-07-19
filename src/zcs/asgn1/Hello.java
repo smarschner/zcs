@@ -2,8 +2,11 @@ package zcs.asgn1;
 
 public class Hello {
 	
-	public static void main(String args[]) {
-		System.out.println("Hi Zoë!!");
+	int x = 2;
+	public static void main(){
+		int x = 3;
+		System.out.println(x);
 	}
+	
 
 }
