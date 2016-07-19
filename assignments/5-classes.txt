@@ -30,4 +30,4 @@ Now suppose this class is run as an application, so that the main method is exec
 
 Execrise B:
 
-Take a look at the classes in Asgn5ExerciseA.java.  Simulate the execution of main() for yourself, and make neat drawings of the situation that exists each time execution reaches line 27.  What is the output of this program?
+Take a look at the classes in Asgn5ExerciseB.java.  Simulate the execution of main() for yourself, and make neat drawings of the situation that exists each time execution reaches line 27.  What is the output of this program?
