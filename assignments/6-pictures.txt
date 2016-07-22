@@ -1,0 +1,152 @@
+Assignment 6: pretty pictures
+
+OK, now that we know objects, subclasses, methods, and conditionals, I think
+we can embark on an application that makes pictures!
+
+In order to draw anything in Java we need to make a window.  The book has
+already hinted at how -- you create an instance of the class
+java.swing.JFrame.
+
+The user interface system is a big chunk of the Java library, and it's pretty
+complicated, with layers of stuff that were introduced at different times. The
+oldest layer is called "AWT" which stands for Abstract Windowing Toolkit.
+You'll find a lot of the more basic things there.  There is a newer layer
+called "Swing" (probably stands for something but I'm not sure what) that
+contains the user interface _components_, as they are called, that are best to
+use now.  Components are all the pieces of a user interface -- buttons,
+checkboxes, text entry areas, menus, and so on -- that you can put together in
+what are called _layouts_ that arrange them in windows.
+
+For now we'll just make a window (a JFrame) and put one component in it, which
+is a JPanel.  JPanel doesn't really do much for you, it just is a place to put
+other components or to draw things.  Its documentation is here:
+
+   https://docs.oracle.com/javase/8/docs/api/javax/swing/JPanel.html
+
+and it's worth exploring a little bit.  There is a class hierarchy
+(inheritance) diagram at the top that shows you JPanel is a subclass of
+JComponent and so on.  If you scroll down you can see this class has a few
+fields and methods of its own (none of them are that important), but it has
+many methods that it inherits from its superclasses.  So many methods!  Since
+all we want to do is draw some things in the window, we will just need a few.
+In particular, JComponent.getGraphics() gives us an instance of the Graphics
+class that has a bunch of methods for drawing in the window, and
+Component.add*Listener gives us ways to find out about user input from the
+mouse and keyboard.
+
+The goal for this project is to make a little application where the user can
+draw a rectangle in the window and move it around.  We'll start with a very
+simple application that I made, called zcs.asgn6.GraphicsApp.  We don't have
+to completely understand how it works to extend it.  Try running it!
+
+It brings up an empty window.  Whoa, pretty boring.
+
+To make it do something better, we'll make a subclass of GraphicsApp that
+keeps the behavior of setting up a window, but also draws something in the
+window.  Take a look at zcs.asgn5.ExampleApp.  It overrides one method in
+GraphicsApp, which is createAndShowGUI() (the one with no arguments).  It does
+the same thing as the base class version: it calls the two-argument
+createAndShowGUI.  But it gives a different window title and it passes an
+instance of a subclass of JPanel rather than a regular JPanel.  It also
+provides its own main() function, which instantiates ExampleApp instead of
+GraphicsApp when starting the application.
+
+The real action is in ExamplePanel, the subclass of JPanel.  This class only
+overrides one method, but it's a good one: paintComponent().  That method is
+called whenever Swing wants this component to draw its contents -- for
+instance, when the window first becomes visible, when it is uncovered by other
+windows, or when the user makes it larger so that more area shows that hasn't
+been painted yet.  There is also a method repaint() of JPanel (inherited from
+JComponent) that you can call to specifically request that Swing repaint the
+panel.  You need to call this any time something changes that affects what you
+draw in the window, since otherwise Swing will not know it needs to call
+paintComponent again.
+
+There is one parameter to paintComponent, g, which is an instance of the
+Graphics class.  Take a look at the documentation for that class (google "java
+8 Graphics" and you will get into the Java API documentation for the current
+version of Java).  This class is what provides all the methods you can use to
+draw stuff in the panel.
+
+(One point to make about ExamplePanel: it is inside the class ExampleApp, and
+it is marked static.  This is called a "nested static class."  This means it's
+just a regular class, but it "belongs to" the ExampleApp class.  It is the
+conventional way to make a helper class like ExamplePanel that is only ever
+meant to be used by one class and is of no interest to anyone else.  If you
+leave off "static" you are defining an "inner class" which is something a bit
+different that we'll get to later, maybe.)
+
+Step 1: Make yourself a new subclass of GraphicsApp, and set it up in the same
+way as ExampleApp, with its own subclass of JPanel that overrides
+paintComponent.  Make it paint a rectangle instead, by calling fillRect
+instead of drawString.  (Look up the arguments in the API documentation.)
+Whee!  A window with a rectangle in it!!
+
+Step 2: Look through the documentation for the Graphics class, and try out a
+bunch of the methods there.  Use them to draw something cool in the window. It
+could be whatever you want!  Experiment with colors and line styles.  You
+might also like to use the method setBackground that your class inherits from
+JComponent.
+
+Step 3: Make your panel respond to mouse input by following these steps:
+
+  (a) Add "implements MouseInputListener" after "extends JPanel" in the
+definition of your panel class.  Ask me about interfaces later, but this means
+you are saying your class is able to "listen" to input from the mouse, which
+means it promises to have a bunch of methods that can be called when mouse
+evenst happen.
+
+  (b) Use Eclipse error correction to add all the methods that you need to
+have in order to be a MouseInputListener.  You will see they have names like
+mouseClicked; these methods will be called when the mouse (er, trackpad) does
+the named things.
+
+  (c) Create a constructor for your panel class.  In it, call the method
+addMouseListener (inherited from JPanel, where it is inherited from
+JComponent), giving it "this" as its argument.  By doing this you are saying
+"This instance of MyPanel (or whatever you called it) wants to hear about
+mouse events that happen in this component."  It seems slightly weird that you
+have to do this, but the idea is that the listener and the component could be
+different objects; to keep the number of classes to a minimum here they are
+the same object, which listens to itself, so to speak.
+
+  (d) Put some print statements in the mouse listener functions that print out
+the X and Y coordinates of their arguments.  Get them using the getX() and
+getY() methods of MouseEvent; see the API on MouseEvent for more.  Then run
+your program and try generating some mouse events by moving the pointer in and
+out of your window, tapping, holding, dragging, etc.  If all is well your
+program will print stuff out as you make these events; play with it for a
+while to get a sense for what the various events mean.
+
+Step 4: Modify your drawing and input handling code so that in addition to
+whatever else it draws, your program draws a square that moves around,
+teleporting to the location where the user clicks, each time they click.  To
+do this, you will need to have your mouse input listener method store
+something in some instance variables, then call repaint().  The drawing code
+then needs to use the numbers that were stored to decide where to position
+part of the drawing.
+
+Step 5: Further modify your program so that the user can draw a rectangle of
+any size, at any location, by clicking at one corner and dragging to the other
+(in the usual way that drawing programs let you draw rectangles).  Steps:
+
+  (a) Make your implements clause read "implements MouseListener,
+MouseMotionListener" and then let Eclipse add the unimplemented methods from
+MouseMotionListener.  Using print statements figure out when these get called.
+
+  (b) Modify your logic so that when the user pressed the button down, your
+program starts dragging a rectangle (starting with a zero-size empty
+rectangle), and as they move across the window one corner of the rectangle
+follows their mouse/finger while the other corner stays at the point where
+they first pressed down.  Then when they release the button make one last
+update so the rectangle spans from where they pressed down to where they
+released.  This will probably require at least 5 fields to keep track of what
+is going on; the logic is a little intricate.
+
+Then you have a drawing program just like Adobe Illustrator!  Well, except
+that it only supports drawings with one object and the object has to be a
+rectangle.  But still!
+
+
+
+
