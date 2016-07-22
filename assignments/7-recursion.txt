@@ -1,0 +1,110 @@
+Assignment 7: Recursive functions
+
+We've seen that methods can call other methods that call other methods and so
+on.  Many students are surprised to learn that it's perfectly fine for a
+function to call itself.  Here is an example.
+
+	int addEmUp(int n) {
+		if (n == 0)
+			return 0;
+		else
+			return n + addEmUp(n - 1);
+	}
+
+What does this function do?  Well, the simple case is when you call
+addEmUp(0).  It returns 0, right?
+
+Now how about if you call addEmUp(1)?  The parameter n is not 0, so it
+evaluates the expression 1 + addEmUp(0).  We know what the result of
+addEmUp(0) is.  So it returns 1.
+
+What about addEmUp(2)?  For that argument it evaluates 2 + addEmUp(1).  But we
+already know what the result of addEmUp(1) will be.  So it returns 3.
+
+What's the pattern?  What does addEmUp(N) return for an arbitrary value of N?
+
+A function that calls itself like this is called "recursive" and this general
+topic is "recursion."  Although it can be quite mind-bending at first,
+recursion provides really elegant ways to solve a lot of problems.
+
+Here is another recursive method that does something similar.
+
+	int addEmUp(int n, int m) {
+		if (n == m)
+			return 0;
+		else
+			return n + addEmUp(n + 1, m);
+	}
+
+-----
+Exercise 1: Manually evaluate the expressions addEmUp(3, 6) and addEmUp(-1,
+2), drawing all the call frames that are created in the process, with their
+parameter and return values.  It should not be too many.  Describe
+mathematically what it is computing.
+-----
+
+The way to think about recursive functions, though, is not at all in terms of
+the sequence of things that happens when they are executed.  The idea is to
+take whatever problem you are solving, assume you can already solve it for
+"easier" cases (whatever that means), and write the answer in terms of the
+easier answers.
+
+Huh???  How about an example.  Suppose we want to write a method that finds
+the length of a string, using only the methods equals() and substring() of the
+String class.  At first this seems impossible: equals() can only compare to
+particular strings, and substring() doesn't tell me anything about the length
+by itself; it just gives me a shorter string.
+
+But wait, maybe finding the length of a shorter string is "easier".  Certainly
+we can handle length 0 using equals(), since there is only one string that has
+that length.  Now here is the tricky mental gymnastics: suppose we have a
+string s.  We don't know its length, but we have a function that we know can
+compute the length of any shorter string.  So let's make a string s2 that is
+exactly 1 character shorter than s -- how about setting s2 = s.substring(1)?
+If we know the length of s2, we just add 1 and that is our answer.
+
+What is this mystical function that works for shorter strings?  It's the
+function we are writing!  We can compute the length of the shorter string by
+making a recursive call.  Now I can make an attempt at writing this function.
+
+	int strlen(String s) {
+		return 1 + strlen(s.substring(1));
+	}
+
+Great!  As long as strlen works for strings shorter than N, it works for
+strings of length N.  But does it work?  Try hand-evaluating it for a string
+of length 1.
+
+There is a problem.  It doesn't work for empty strings.  But we already said that we can solve that problem with equals(): if s.equals("") then we know its length is 0.  We can use this idea to fix our method:
+
+	static int strlen(String s) {
+		if (s.equals(""))
+			return 0;
+		else
+			return 1 + strlen(s.substring(1));
+	}
+
+In recursive functions you always have to have some kind of special case like
+this that ends the recursion.  It is called the "base case" -- the case that
+once you reduce it that far it is no problem to solve it.
+
+So the steps to developing a recursive function:
+
+  0. Figure out what "easier" means for your problem
+  1. Write the answer in terms of the answer to an "easier" problem (the recursive case)
+  2. Write the answer to the "easiest" problem (the base case)
+  3. Implement the method, using (2) or (3) depending on the value of your parameters.
+
+----- 
+Exercise 2: Write a recursive function that computes Fibbonacci numbers. The
+usual definition of Fibbonacci numbers is already recursive in nature so this
+is pretty natural.  Try out your function and see if it works!
+-----
+
+Now do Lab 6 from CS1110.  You can get it here:
+
+   http://www.cs.cornell.edu/Courses/cs1110/2011fa/handouts/labs/lab06recursion.html
+
+Put the Rec class in the package zcs.asgn7 and check it in when you're done.
+
+
