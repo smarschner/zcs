@@ -23,6 +23,8 @@ already know what the result of addEmUp(1) will be.  So it returns 3.
 
 What's the pattern?  What does addEmUp(N) return for an arbitrary value of N?
 
+	sum of all numbers 0 to n
+
 A function that calls itself like this is called "recursive" and this general
 topic is "recursion."  Although it can be quite mind-bending at first,
 recursion provides really elegant ways to solve a lot of problems.
