@@ -127,11 +127,15 @@ public class Rec {
        if(Integer.toString(n)==""){
     	   return 0;
        }else{
+    	   // No fair converting to a string!  That's doing all the work for you :-)
+    	   // Think in terms of integer division...
     	   return 1 + numDigits(Integer.parseInt((Integer.toString(n)).substring(1)));
        }
     }
    
     //i had to change this method to long since math.round gave me a long
+    // Yeah, Math.round(double) returns a long.  You could use 1.0f and it would
+    // return an int, or you could cast the long to an int using (int) Math.round(...)
     //also i'm not sure if the next two are what you were thinking of
     
     /** = sum of the digits in the decimal representation of n.
@@ -142,8 +146,15 @@ public class Rec {
     	if(n==0){
     		return 0;
     	}else{
-    		  long lastdigit= Math.round((((n*1.0)/10)-(n/10))*10);
-    		  return lastdigit+sumDigits(n/10);
+    		// This is neat to compare the results of int and float division.
+    		// But you don't need floating point arithmetic here.  You could
+    		// compute what you are computing as n - 10 * (n/10).  But that is
+    		// the remainder after dividing n by 10, also known as n % 10.
+    		// With that approach can you make this simpler?
+    		long lastdigit= Math.round((((n*1.0)/10)-(n/10))*10);
+    		// Incidentally, you can write "(double) n" to convert n to a double
+    		// rather than multiplying by 1.0.ss
+    		return lastdigit+sumDigits(n/10);
     	}
     }
     
@@ -154,12 +165,13 @@ public class Rec {
     	if(n==0){
     		return 0;
     	}else{
-    		  long lastdigit= Math.round((((n*1.0)/10)-(n/10))*10);
-    		  if(lastdigit==2){
-    			  return 1 + number2(n/10);
-    		  }else{
-    			  return 0 + number2(n/10);
-    		  }
+    		// Can apply the same simplification as the previous one.
+    		long lastdigit= Math.round((((n*1.0)/10)-(n/10))*10);
+    		if(lastdigit==2){
+    			return 1 + number2(n/10);
+    		}else{
+    			return 0 + number2(n/10);
+    		}
     	}
     }
     
@@ -173,7 +185,7 @@ public class Rec {
         }else{
         	return 1+ into(n/c, c);
         }
-    }  
+    }  // Awesome!!
     
     /** = Fibonnaci number F(n).
       Precondition:   n � 0.
@@ -184,9 +196,11 @@ public class Rec {
            0, 1, 1, 2, 3, 5, 8, 13, 21, 34. */
     public static int Fib(int n) {
         return 0;
-    }
+    }  // Did this one already I guess.
     
     //i have no idea how this works i just wrote the hints out in code
+    // Basically it's using the binary representation of c.
+    // I'll explain it in person after I'm back.
     /** = b ** c, i.e. b multiplied by itself c times.
       Also called b "to the power" c.
       Precondition: c � 0
@@ -207,6 +221,10 @@ public class Rec {
     
     //i don't know exactly what any of this means since its using not eclipse but i can gather
     //that you can create two many frames with recursion
+    // You can still do this -- you just have to write test functions to call it, instead
+    // of using that Interactions pane that we don't have.  Then watch  what it dumps out
+    // when they fail (because of the infinite recursion): it will be a stack trace that 
+    // shows how many recursive calls it managed to make before it quit.
     /** You know that each execution of a method call causes a frame to be created to hold
       information about the call --its parameters, local variables, the method name, the scope
       box, etc. On your computer, how many frames can be present at one time? To find out, hit
