@@ -1,0 +1,270 @@
+Assignment 8: Iteration
+
+Read through this assignment, then read throuh Chapter 7 in the book, then
+work on the exercises in this file.  The exercises ask you to implement
+various methods -- maybe make them static methods of a class
+zcs.asgn8.Exercises.
+
+The most common way to do repetitve operations is using loops.  There are
+three kinds of loops in Java.
+
+A while loop repeatedly executes the statements in the body of the loop.
+Before each iteration, it evaluates the loop condition, and it only continues
+as long as that condition is true.
+
+int numGreetings = 10;
+while (numGreetings > 0) {  // the boolean expression in the parentheses is the "loop condition"
+	System.out.println("Hi Zoë!");  // these two statements are the "loop body"
+	numGreetings = numGreetings - 1; 
+}
+
+A do-while loop operates similarly, except that it checks the loop condition
+at the end, rather than the beginning.
+
+int numGreetings = 10;
+do {
+	System.out.println("Hi Zoë!");
+	numGreetings = numGreetings - 1;
+} while (numGreetings > 0);
+
+---
+Question: for what values of numGreetings do these two loops create the same output?
+---
+
+There are a couple of common patterns for loops.  One is to have a "loop
+counter" as in these examples, which you change by 1 in each iteration of the
+loop, counting up how many things you have done/visited/processed/whatever,
+counting down how many are left to do, or keeping track of which one you are
+currently working on.  A loop with a counter always has an "initialization" at
+the beginning that sets the initial value, an "update" in the loop body that
+steps the counter to the next value, and the loop condition is some comparison
+involving the counter.
+
+---
+Exercise: write a method printEm(int m, int n) that prints out all the
+integers  m <= i < n, in increasing order.  Use a while loop, and try writing
+versions that use "<", "<=", and "!=" operators in the loop condition.
+---
+
+---
+Exercise: write a method printEmBackwards(int m, int n) that prints out
+*exactly the same* numbers that the previous one prints, but in reverse order.
+
+Did you use different comparison operators in the loop conditions in the
+forward and backward cases?  If not, see if you can make one of your loop
+conditions a teeny bit neater. 
+---
+
+Because loops with counters are so common, and they all have initializations,
+conditions, and updates, the inventors of C (from which Java borrows most
+of its syntax) made up a slightly cryptic kind of loop that is just a
+shorthand to make loops with counters a little more compact.  It's called the
+for loop, and it has three expressions in the loop header: initialization,
+condition, and update:
+
+for (int n = 0; n < 10; n++) {
+	System.out.println(n);
+}
+
+(
+	Aside on increment operators:  You'll notice I used the expression "n++".
+	This is a shorthand for "n = n + 1" and you always see it used in for loop
+	increments. The operator ++ is called the "increment operator" because it
+	increments (adds one to) the value of n, and "x++" is called a "post-increment
+	expression." The value of the expression "x++" is the value of x before it was
+	incremented (i.e. x is incremented after it is evaluated).  If you put ++
+	before the variable, it is a "pre-increment expression" and the value of the
+	expression is the value of x after it is incremented (i.e. it is incremented
+	before it is evaluated). There is also a "decrement operator", --, and you can
+	use it to write pre- and post-decrement expressions.  
+
+	---
+	Exercise: Guess what the following does, then try it out:
+
+	int n = 0;
+	while (n < 10) { System.out.println(n++); }
+	System.out.println();
+	while (n > 0) { System.out.println(n--); }
+	System.out.println();
+	while (n < 10) { System.out.println(++n); }
+	System.out.println();
+	while (n > 0) { System.out.println(--n); }
+	---
+
+	Of course, if you are not using the value of an increment expression, which is
+	usually the case in a for loop, it doesn't matter which you use, but everyone
+	uses the post- version.
+)
+
+This will print out the integers 0, 1, ..., 9, and it is (almost) exactly the
+same as:
+
+int n = 0;
+while (n < 10) {
+	System.out.println(n);
+	n = n + 1;
+}
+
+You'll also notice I was able to declare the loop counter variable n right
+there in the loop header itself.  One difference between the for and while
+loops I wrote here is that in the for loop, the _scope_ of the counter is the
+loop body (i.e. it's an undefined variable if you try to access it before or
+after the loop, but in the while loop the scope of the counter is the block of
+code that contains the loop.
+
+---
+Exercise: implement the methods printEm and printEmBackwards using for loops.
+---
+
+Another common variable that gets used with loops is an "accumulator" -- a
+variable that you update each time through the loop to get to a particular
+answer by the end.  For instance:
+
+int sum = 0;
+for (int n = 0; n < 10; n++) {
+	sum += n;
+}
+
+(
+	Aside on compound assignment operators:  Here you'll see I'm using the
+	operator +=. The expression "x += y" is shorthand for "x = x + y".  There is a
+	whole bunch of similar ones, for just about every operation you could want:
+	+=, -=, *=, /=, even &&= and ||=. 
+
+	---
+	Question: Does the expression "x += 1" behave more like "++x" or "x++"?
+	---
+)
+
+This loop adds up the values from 0 to 10.  You can also use a String as an
+accumulator, repeatedly adding to it during each iteration. For instance:
+
+String alphabet = "";
+for (char c = 'a'; c <= 'z'; c++) {
+	alphabet += n;
+}
+
+Here I am using the fact that the type 'char' is actually an integer type.
+This is a little obscure but kind of cool.
+
+These loops both have counters and accumulators, but you could use an
+accumulator without a counter if you have some other way to tell when you are
+done.
+
+---
+Exercise: Use InputReader to implement a method addFromUser() where the
+user enters several numbers, and when they just hit return instead of entering
+a number, it prints the sum of the numbers.  Like this:
+
+Type a number: 29
+Type a number: 8
+Type a number: 2001
+Type a number: 
+Your sum is 2038.
+---
+
+---
+Exercise: Make a similar method listFromUser() but using a String accumulator,
+that could produce this kind of transcript:
+
+Type a word: apple
+Type a word: banana
+Type a word: and pickle
+You have an apple, a banana, and a pickle.
+---
+
+---
+Longer exercise: Do the recursion lab again, but this time implement all the methods
+using loops instead.  I made a class zcs.asgn8.Iter that has (most of) the
+functions from zcs.asgn7.Rec.
+---
+
+****
+
+OK, now you have seen how loops work and you have a sense for how to do some
+things with them.  There is one more feature of Java, called a Collection,
+that is closely connected to loops, and is very powerful and used constantly.
+There are many types of Collection (they are all subclasses of a class called
+java.util.Collection), and their purpose is to hold references to a collection
+of objects, which can grow or shrink as you add objects to it and remove them
+from it.
+
+A basic collection class is ArrayList.  It keeps a list of values of any type.
+Because ArrayList has to know what type of object it is supposed to be able to
+hold, the syntax for writing the type uses a new thing called a "type
+argument," which is maybe easiest to explain by example:
+
+// Create an ArrayList that holds a list of ints.  It starts out empty.
+ArrayList<String> list = new ArrayList<String>();
+// Add three strings to the list.
+list.add("Hi");
+list.add("there");
+list.add("um");
+list.add("Zoë");
+// Remove one of them
+list.remove("um");
+
+Now the list contains just three strings.  Now there is a special kind of for
+loop that you can use to loop over the items in a collection:
+
+// Print out all the strings in the list
+for (String s : list) {
+	System.out.println(s);
+}
+
+When you use this "variable : collection" form, the loop makes one iteration
+for each item in the collection.
+
+Check out the documentation here:
+
+https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
+
+or just google "java 8 arraylist"
+
+---
+Exercise: Make another version of the addFromUser() method, which stores all
+the integers in a list, then adds them up when the user is done.
+---
+Exercise: Make a version of the listFromUser() method where the user indicates
+the end of the list by entering a blank string, rather than by adding "and" to
+the last element.  You can think of the various ways to do this, but for this
+exercise, store the strings in a list, then loop over the list at the end.
+You will find it tricky to do something different for the last element.  As a
+hint, here is another way to print all the strings in a list:
+
+// Print out all the strings in the list
+for (int i = 0; i < list.length(); i++) {
+	System.out.println(list.get(i));
+}
+---
+
+OK, now to the final exercise.
+
+---
+Exercise: Make a new version of your RectanglesApp from Assignment 6, that
+lets the user create as many rectangles as they want.  You'll need to store
+them in a collection (an ArrayList should be fine) so that you can draw them
+all each time the window is painted.  You probably want to create a class
+Rectangle to keep things neat in your list.
+
+If that was easy and you're looking for a challenge, I think you know what you
+need to know now to add these features:
+
+* You can move old rectangles by clicking and dragging them around.
+* You can delete old rectangles by double-clicking them.
+
+and if you're still bored:
+
+* You can select a rectangle by clicking on it, causing 8 resize handles
+  to appear.
+* You can bring the selected rectangle to the front or send it to the back 
+  by using some keys like "b" and "f".
+* You can change the size of the selected rectangle by clicking and 
+  dragging on the handles.
+
+To do some of these things you will need to read about the methods of
+ArrayList  that let you insert objects in particular places, and you'll need
+to find KeyListener which works like MouseListener and lets you get keyboard
+input.  (One thing to know about keyboard input is that you might not receive
+key events until you click on your window to give it the "keyboard focus".)
+---
