@@ -89,6 +89,50 @@ for (int n = 0; n < 10; n++) {
 	while (n < 10) { System.out.println(++n); }
 	System.out.println();
 	while (n > 0) { System.out.println(--n); }
+	
+		0
+		1
+		2
+		3
+		4
+		5
+		6
+		7
+		8
+		9
+		
+		10
+		9
+		8
+		7
+		6
+		5
+		4
+		3
+		2
+		1
+		
+		1
+		2
+		3
+		4
+		5
+		6
+		7
+		8
+		9
+		10
+		
+		9
+		8
+		7
+		6
+		5
+		4
+		3
+		2
+		1
+		0
 	---
 
 	Of course, if you are not using the value of an increment expression, which is
@@ -133,6 +177,8 @@ for (int n = 0; n < 10; n++) {
 
 	---
 	Question: Does the expression "x += 1" behave more like "++x" or "x++"?
+	
+	++x
 	---
 )
 

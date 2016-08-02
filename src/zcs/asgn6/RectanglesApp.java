@@ -20,6 +20,9 @@ public class RectanglesApp extends GraphicsApp {
 	  */
 	static class RectanglePanel extends JPanel  implements MouseInputListener {
 		
+		//mouse clicked coordinates
+		int clickx;
+		int clicky;
 		//the top left corner of rect
 		int cornerx;
 		int cornery;
@@ -28,6 +31,9 @@ public class RectanglesApp extends GraphicsApp {
 		int mousey;
 		//true when mouse has been released
 		boolean released;
+		
+		//color to be used next
+		Color colour;
 		
 		/**
 		 * constructor
@@ -45,10 +51,36 @@ public class RectanglesApp extends GraphicsApp {
 		@Override
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			setBackground(new Color(255, 184, 184));
-			g.setColor(new Color(255, 255, 255));
+			setBackground(Color.white);
+			
+			//draw color chooser
+			g.setColor(new Color(231, 143, 143));//red
+			g.fillRect(0, 0, 25, 25);
+			g.setColor(new Color(251, 176, 115));//orange
+			g.fillRect(0, 25, 25, 25);
+			g.setColor(new Color(255, 249, 156));//yellow
+			g.fillRect(0, 50, 25, 25);
+			g.setColor(new Color(139, 240, 149));//green
+			g.fillRect(0, 75, 25, 25);
+			g.setColor(new Color(167, 214, 244));//blue
+			g.fillRect(0, 100, 25, 25);
+			g.setColor(new Color(183, 167, 244));//purple
+			g.fillRect(0, 125, 25, 25);
+			//choose color
+			if(0 <= clickx && clickx <= 25){
+				if(0<= clicky && clicky <=25){colour= new Color(231, 143, 143);}
+				if(25< clicky && clicky <=50){colour= new Color(251, 176, 115);}
+				if(50< clicky && clicky <=75){colour= new Color(255, 249, 156);}
+				if(75< clicky && clicky <=100){colour= new Color(139, 240, 149);}
+				if(100< clicky && clicky <=125){colour= new Color(167, 214, 244);}
+				if(125< clicky && clicky <=150){colour= new Color(183, 167, 244);}
+			}
+			
+			
+			g.setColor(new Color(248, 248, 248));
 			g.drawRect(cornerx, cornery, mousex-cornerx, mousey-cornery);
 			if(released==true){
+				g.setColor(colour);
 				g.fillRect(cornerx, cornery, mousex-cornerx, mousey-cornery);
 			}
 
@@ -60,6 +92,9 @@ public class RectanglesApp extends GraphicsApp {
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			clickx= e.getX();
+			clicky= e.getY();
+			repaint();
 		}
 
 		@Override
