@@ -26,7 +26,7 @@ public class GraphicsApp {
 	 * @param title The title of the application's window
 	 * @param panel The component that will go in the window
 	 */
-	void createAndShowGUI(String title, JPanel panel){
+	public void createAndShowGUI(String title, JPanel panel){
 		
     	// Create and set up the window
         frame = new JFrame(title);
@@ -48,7 +48,7 @@ public class GraphicsApp {
 	 * than JPanel, or by adding children to the JPanel before creating
 	 * the GUI.
 	 */
-	void createAndShowGUI() {
+	public void createAndShowGUI() {
 		createAndShowGUI("Graphics Application", new JPanel());
 	}
 		
@@ -59,7 +59,7 @@ public class GraphicsApp {
 	 * 
 	 * @param app The instance representing the app to be run.
 	 */
-	static void startApp(GraphicsApp app) {
+	public static void startApp(GraphicsApp app) {
         // Schedule a job for the event-dispatching thread:
         // creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {

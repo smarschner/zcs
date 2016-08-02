@@ -53,7 +53,7 @@ public class NameTag extends GraphicsApp {
 	 * overrides create and show gui
 	 */
 	@Override
-	void createAndShowGUI(){
+	public void createAndShowGUI(){
 		createAndShowGUI("Name Tag", new NamePanel());
 	}
 	

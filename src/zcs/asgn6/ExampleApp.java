@@ -45,7 +45,7 @@ public class ExampleApp extends GraphicsApp {
 	 * of DrawingExamplePanel as its main component.
 	 */
 	@Override
-	void createAndShowGUI() {
+	public void createAndShowGUI() {
 		createAndShowGUI("Example Application", new ExamplePanel());
 	}
 		

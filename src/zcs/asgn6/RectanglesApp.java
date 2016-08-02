@@ -138,7 +138,7 @@ public class RectanglesApp extends GraphicsApp {
 	 * overrides create and show gui
 	 */
 	@Override
-	void createAndShowGUI(){
+	public void createAndShowGUI(){
 		createAndShowGUI("Rectangle", new RectanglePanel());
 	}
 	
