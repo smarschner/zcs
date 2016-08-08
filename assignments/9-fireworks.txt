@@ -1,20 +1,34 @@
 Assignment 9: Fireworks!!
 
-For this assignment you will get to play with animation and a graphics technique called "particle systems".
+For this assignment you will get to play with animation and a graphics technique called "particle 
+systems".
 
-The goal is to make a nice fireworks display, with as many different kinds of fireworks as you feel like making.  I'll start you off by telling you how to make a sparkler, and sketching out how you could make a more choreographed display of fireworks.
+The goal is to make a nice fireworks display, with as many different kinds of fireworks as you 
+feel like making.  I'll start you off by telling you how to make a sparkler, and sketching out 
+how you could make a more choreographed display of fireworks.
 
 Step 1: a single particle.
 
-In physics, a 'particle' is a small object (such as a bit of burning material thrown out by a firework) that is small enough that we don't care about its shape or whether it rotates.  It only has a position, which in our 2D world is a pair of coordinates (x, y).
+In physics, a 'particle' is a small object (such as a bit of burning material thrown out by a 
+firework) that is small enough that we don't care about its shape or whether it rotates. 
+ It only has a position, which in our 2D world is a pair of coordinates (x, y).
 
-A particle has a velocity, which in our 2D world is a pair of numbers (vx, vy).  The x velocity is how fast the x coordinate changes, and the y velocity is how fast the y coordinate changes.  For instance, a particle moving straight to the right could have the velocity (1, 0), and if it's at position (10, 10) at time 0, then at time 1 it will be at (11, 10), and time 2 at (12, 10), and so on.
+A particle has a velocity, which in our 2D world is a pair of numbers (vx, vy).  The x 
+velocity is how fast the x coordinate changes, and the y velocity is how fast the y coordinate 
+changes.  For instance, a particle moving straight to the right could have the velocity (1, 0), 
+and if it's at position (10, 10) at time 0, then at time 1 it will be at (11, 10), and time 2 at 
+(12, 10), and so on.
 
-(We have to decide what units we are using to measure position and time -- the simplest probably is to use pixels and animation frames).
+(We have to decide what units we are using to measure position and time -- the simplest probably 
+is to use pixels and animation frames).
 
-A particle also has an acceleration, which is another pair of numbers (ax, ay).  The acceleration is how fast the velocity changes: for instance, if a particle is just falling under gravity that pulls in the +y direction, it might have an acceleration of (0, 1), and if its velocity is (10, 0) at time 0, it will be (10,1) at time 1, (10, 2) at time 2, and so on.
+A particle also has an acceleration, which is another pair of numbers (ax, ay).  The acceleration
+ is how fast the velocity changes: for instance, if a particle is just falling under gravity that 
+ pulls in the +y direction, it might have an acceleration of (0, 1), and if its velocity is (10, 0)
+  at time 0, it will be (10,1) at time 1, (10, 2) at time 2, and so on.
 
-A particle that moves with constant acceleration will trace out a parabola.  For instance with acceleration (0, 1) and intial velocity (10, 0) and initial position (0, 0):
+A particle that moves with constant acceleration will trace out a parabola.  For instance with 
+acceleration (0, 1) and intial velocity (10, 0) and initial position (0, 0):
 
 time   pos    vel
   0    0, 0   10, 0
@@ -26,38 +40,78 @@ time   pos    vel
 
 and so on.  Constant acceleration is a pretty good starting point for a spark from a firework.
 
-You can find an example in ExampleAnimatedApp that does this with a single particle.  I recommend making a copy and setting up the colors to be prettier and more appropriate to fireworks.  
+You can find an example in ExampleAnimatedApp that does this with a single particle.  I recommend 
+making a copy and setting up the colors to be prettier and more appropriate to fireworks.  
 
 A couple of Java features to note along the way:
 
-* Some of the variables are marked "final".  This means the values they are assigned are the final values; they can't be changed again.  This makes them "constants" and it's conventional to write their names in all caps to remind programmers that they are constants.
+* Some of the variables are marked "final".  This means the values they are assigned are the final 
+values; they can't be changed again.  This makes them "constants" and it's conventional to write 
+their names in all caps to remind programmers that they are constants.
 
-* The class AnimatedPanel, which is a subclass of JPanel that can be used in a GraphicsApp to do animation, is labeled "abstract".  An abstract class is one that can't actually be used because it doesn't define all its methods; it only promises to have them, and you have to make a subclass that actually implements them in order to use it.  For example, an AnimatedPanel needs to be able to draw its contents, but it's not until we make a particular subclass of AnimatedPanel that we know what to draw.  So we leave that method labeled "abstract", and you'll notice it has no body.  Trying to create an AnimatedPanel by writing "new AnimatedPanel()" is an error, because then we'd have an instance that doesn't have implementations for some of its methods. 
+* The class AnimatedPanel, which is a subclass of JPanel that can be used in a GraphicsApp to do 
+animation, is labeled "abstract".  An abstract class is one that can't actually be used because 
+it doesn't define all its methods; it only promises to have them, and you have to make a subclass
+ that actually implements them in order to use it.  For example, an AnimatedPanel needs to be able
+  to draw its contents, but it's not until we make a particular subclass of AnimatedPanel that we 
+  know what to draw.  So we leave that method labeled "abstract", and you'll notice it has no body.  
+  Trying to create an AnimatedPanel by writing "new AnimatedPanel()" is an error, because then we'd 
+  have an instance that doesn't have implementations for some of its methods. 
 
-Play around with the velocity and acceleration to see the effects; maybe make a variable for the acceleration.
+Play around with the velocity and acceleration to see the effects; maybe make a variable for the 
+acceleration.
 
-You'll notice that the example app checks when the particle has exited the bottom of the window, and resets it.
+You'll notice that the example app checks when the particle has exited the bottom of the window, 
+and resets it.
 
 Step 2: Heaps of particles
 
-What makes a particle into a particle system is having lots of them (like, hundreds of them).  So give your fireworks class a bunch of particles.  The idea is to make a collection (an ArrayList will do) and fill it with particles; the right way to do this is to define a class (probably you'll call it Particle) that contains the state of one particle, and then make a collection of those.  Then the drawing code is the same as before, but it loops over the collection; and the animation code is the same as before, but it also loops over the collection.
+What makes a particle into a particle system is having lots of them (like, hundreds of them).  So
+ give your fireworks class a bunch of particles.  The idea is to make a collection (an ArrayList 
+ will do) and fill it with particles; the right way to do this is to define a class (probably you'll
+  call it Particle) that contains the state of one particle, and then make a collection of those.  
+  Then the drawing code is the same as before, but it loops over the collection; and the animation
+   code is the same as before, but it also loops over the collection.
 
-In order to actually see a bunch of particles you have to create a bunch and put them in the collection, and they all have to be different.  (Otherwise they'll just draw all in the same place and look the same as a single particle.)  A useful tool for this is Math.random().  It returns a double that is between 0 and 1 and is different every time you call.  Use this to give your particles all different velocities!  Starting them all at the same point will give you a firework of sorts, or maybe a fountain, if you reset them to that same point when they fall out of the window.
+In order to actually see a bunch of particles you have to create a bunch and put them in the 
+collection, and they all have to be different.  (Otherwise they'll just draw all in the same 
+place and look the same as a single particle.)  A useful tool for this is Math.random().  It 
+returns a double that is between 0 and 1 and is different every time you call.  Use this to give 
+your particles all different velocities!  Starting them all at the same point will give you a 
+firework of sorts, or maybe a fountain, if you reset them to that same point when they fall 
+out of
+ the window.
 
-At this point you might like to give your particles colors.  You can generate the colors randomly too, either from the whole range of RGB values, or from some more limited range or from a selection of fixed colors, if you want to have more control over the color palette of your display.
+At this point you might like to give your particles colors.  You can generate the colors 
+randomly 
+too, either from the whole range of RGB values, or from some more limited range or from a
+ selection of fixed colors, if you want to have more control over the color palette of your 
+ display.
 
 How many particles can your program handle before it starts to slow down?
 
 Step 3: A sparkler
 
-To make a fun interactive sparkler toy, here's a simple way.  Set yourself up as a mouse listener and keep track of the position of the mouse pointer.  When sparks expire, reset them to the mouse position with a random velocity.  Voilà!  Sparkler!
+To make a fun interactive sparkler toy, here's a simple way.  Set yourself up as a mouse 
+listener and keep track of the position of the mouse pointer.  When sparks expire, reset them
+ to the mouse position with a random velocity.  Voilà!  Sparkler!
 
 Step 4: Fireworks
 
-A firework has two stages: the rocket goes up, then after a fixed amount of time it explodes, generating a bunch of sparks.  You can do this by having multiple kinds of objects in your scene: keep a list of Rocket objects that have upward velocities and know how long they have until they go off, and keep a list of Particle objects that are flying around the screen.  When a Rocket's "time to explosion" counts down to zero, remove the rocket and add a bunch of particles.  You could create rockets randomly, or somehow in response to mouse clicks.
+A firework has two stages: the rocket goes up, then after a fixed amount of time it explodes,
+ generating a bunch of sparks.  You can do this by having multiple kinds of objects in your 
+ scene: keep a list of Rocket objects that have upward velocities and know how long they have 
+ until they go off, and keep a list of Particle objects that are flying around the screen.  
+ When a Rocket's "time to explosion" counts down to zero, remove the rocket and add a bunch of 
+ particles.  You could create rockets randomly, or somehow in response to mouse clicks.
 
-You can refine your fireworks display endlessly.  Real fireworks have sparks that come out in different numbers, that change color after a certain time, that explode into more little particles after a certain time, etc.  Sparks travel a lot faster when they first come out, then slow down due to air resistance.  Sometimes there is some wind that causes them to drift to the side.
+You can refine your fireworks display endlessly.  Real fireworks have sparks that come out in 
+different numbers, that change color after a certain time, that explode into more little 
+particles after a certain time, etc.  Sparks travel a lot faster when they first come out, then
+ slow down due to air resistance.  Sometimes there is some wind that causes them to drift 
+ to the side.
 
-One subtlety is that a firework is really a spherical 3D thing.  Just generating vx and vy randomly between some fixed bounds makes square fireworks.  Can you think of a way to make them round?  Once you do that I can help you make them look spherical.
-
+One subtlety is that a firework is really a spherical 3D thing.  Just generating vx and vy 
+randomly between some fixed bounds makes square fireworks.  Can you think of a way to make 
+them round?  Once you do that I can help you make them look spherical.
 

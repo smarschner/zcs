@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 public class GraphicsApp {
 	
 	// The application's top level frame
-	JFrame frame;
+	public JFrame frame;
 		
 	/**
 	 * Create the components of the GUI, and configure them so that

@@ -1,5 +1,6 @@
 package zcs.asgn9;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import zcs.asgn6.GraphicsApp;
@@ -30,7 +31,7 @@ public class ExampleAnimatedApp extends GraphicsApp {
 			// from (x, y) to (x + vx, y + vy).  This means it shows up in the image
 			// as a streak, which we show by drawing a line.
 			g.drawLine(Math.round(x), Math.round(y), Math.round(x+vx), Math.round(y+vy));
-		}
+			}
 		
 		@Override
 		public void animationTick() {

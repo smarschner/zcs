@@ -29,7 +29,7 @@ abstract public class AnimatedPanel extends JPanel {
 	 * anomationTick() and repaint() at every INTERVAL milliseconds.
 	 * @param frameRate the frame rate of the animation, in frames per second.
 	 */
-	AnimatedPanel(double frameRate) {
+	public AnimatedPanel(double frameRate) {
 		setDoubleBuffered(true);
 		
 		long interval = Math.round(1000.0 / frameRate);
@@ -43,7 +43,7 @@ abstract public class AnimatedPanel extends JPanel {
 		}, INIT_DELAY, interval);
 	}
 	
-	AnimatedPanel() {
+	public AnimatedPanel() {
 		this(DEFAULT_FRAME_RATE);
 	}
 					
