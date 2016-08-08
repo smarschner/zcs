@@ -2,11 +2,13 @@ package zcs.asgn9;
 
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 /**
  * A JPanel subclass that provides a basic mechanism for doing animation.
@@ -19,7 +21,6 @@ import javax.swing.JPanel;
  */
 abstract public class AnimatedPanel extends JPanel {
 	
-	private static final int INIT_DELAY = 100;
 	private static final double DEFAULT_FRAME_RATE = 60.0;
 		
 	Timer timer;
@@ -32,15 +33,15 @@ abstract public class AnimatedPanel extends JPanel {
 	public AnimatedPanel(double frameRate) {
 		setDoubleBuffered(true);
 		
-		long interval = Math.round(1000.0 / frameRate);
-				
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			public void run() {
+		int interval = (int) Math.round(1000.0 / frameRate);
+		timer = new Timer(interval, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				animationTick();
 				repaint();
-			}		
-		}, INIT_DELAY, interval);
+			}
+		});
+		timer.start();
 	}
 	
 	public AnimatedPanel() {

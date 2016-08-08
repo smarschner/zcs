@@ -1,6 +1,5 @@
 package zcs.asgn9;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import zcs.asgn6.GraphicsApp;
