@@ -1,0 +1,213 @@
+Assignment 10: Arrays and array algorithms
+
+Collections are one way to hold a bunch of things, and they are used a lot.
+But there is a more basic kind of structure that is used for holding sequences
+of values, which is used in cases where there are large numbers of values and
+it's important to access them quicky -- for example, the pixels in an image,
+or the samples in a sound file.  Arrays are also used under the covers to
+implement many of the Collection data structures, like HashSets and
+ArrayLists (duh).
+
+An array holds a fixed number of values, which are all of a single type and
+are called the elements of the array.  An array is an object, like a class
+instance, so it needs to be created using "new".  To declare a variable that
+holds a reference to an array, you add "[]" to the type of the elements.  For
+instance, to declare a variable that holds a single integer:
+
+  int x;
+
+and to declare a variable that holds a reference to an array of integers:
+
+  int[] xs;
+
+For historical reasons of compatibility with C, you can also write:
+
+  int xs[];
+
+which means the same thing, but I think in Java it makes a lot more sense to
+put the brackets on the type rather than the variable name.  I like to give
+arrays names that are plural, to remind me they are arrays.
+
+Having written this declaration, I have a variable that can hold a reference
+to an array, but it doesn't hold one yet.  To actually create the array I have
+to decide how many elements it holds; this is fixed for the entire lifetime of
+the array and can't be changes.  You create an array using a new-expression
+like this:
+
+   xs = new int[10];
+
+That creates an array of 10 integers, all initialized to 0.  Or I can create
+an array of references to a class type, like Particle:
+
+   Particle[] particles = new Particle[1000];
+
+which creates an array of 1000 references to Particles, all all initialized to
+null.
+
+Once I have created an array, I can refer to the elements of the array using brackets, like this:
+
+   xs[0] = 3;  // assign the value 3 to the first (index 0) element of the array
+   xs[9] = xs[0] * 2;   // assign to the last (index 9) element of this 10-element array
+   particles[0] = new Particle();
+
+and so on.  The thing in the brackets is called the array index, and if it is
+out of bounds (< 0 or >= the length of the array) it is an error to read from
+or write to the array element at that index (since it doesn't exist).
+
+Arrays know their length; the length of array xs is xs.length.
+
+A handy thing to know is how to use an "array initializer" to initialize the values
+of an array, right when you create it:
+
+   int[] a = new int[] { 3, 1, 4, 1, 5, 9 };
+
+Arrays can hold any type, and this includes other arrays.  So it is perfectly legit to declare an array whose elements are arrays of integers:
+
+   (int[])[] 2dArray;
+   int[][] 2dArray;
+   int 2dArray[][];
+
+(All three of these mean the same thing.)  These are called two-dimensional arrays, and an important example is an image:
+
+   Color[][] image;
+
+In this case image[3] is row 3 of the image, and image[3][4] is pixel 4 in row 3.
+
+Arrays make for lots of clever looping algorithms.  Here are some exercises.
+
+As you go, you can read Gries chapters 8 and 9.
+
+For each one,  draw a Gries-style picture of the array before and after the
+method is called, and make some test cases to see if it works.  I drew the
+first few pictures as ASCII art below.  (For some of them, e.g. sum and join,
+it doesn't make sense to draw a picture, so don't.)
+
+// interchange elements i and j of the array b
+// before: b = [ ... x ... y ... ]
+//                   i     j
+//
+// after:  b = [ ... y ... x ... ]
+//                   i     j
+void swap(int[] b, int i, int j)
+
+// Insert an element at the front (index 0) of the array b,
+// moving everything else down one place, and dropping the last 
+// (index b.length-1) element.
+// before: b = [ x ...  y  z ]
+//               0     n-1 n   (where n == b.length)
+//
+// after:  b = [ a x ... y ]
+//               0 1     n
+void pushFront(float[] b, int a)
+
+// Add all the elements of the array b
+int sum(int[] b)
+
+// Join all the strings in b together with the separator in between.
+// Example: if b starts as { "foo", "bar", "baz" }, then
+// join(b, ", ") is "foo, bar, baz"
+String join(String[] b, String separator)
+
+// Return the number whose digits are in b.
+// Precondition: 0 <= b[i] < 10 for 0 <= i < b.length.
+// Example: b contains { 8, 2, 9 }; return 829
+int fromDigits(int[] b)
+
+// Return a new array containing the digits of n.
+// For n == 0 you can return an empty array if you want.
+// Example: for n = 829, return the array containing { 8, 2, 9 }.
+int[] toDigits(int n)
+
+// Return a new array that has the same contents as b but 
+// with the element b[i] removed
+// input: [ ...  a  b  c  ... ]
+//        [ 0   i-1 i 1+1   n ]
+//
+// output: [ ...  a  c   ...   ]
+//         [ 0   i-1 i     n-1 ]
+float[] remove(float[] b, int i)
+
+// Return a new array that contains the elements of b, in order, that
+// have index >= h and < k.  I'll use the notation b[h:k] for this 
+// subarray.  Note that this is different from Gries's b[h..k], 
+// which includes both b[h] and b[k].
+int[] subArray(int[] b, int h, int k)
+
+// Return a new array that has the same elemnts as b but in reverse order
+int[] reverseCopy(int[] b)
+
+// Reverse the order of the elements in b
+void reverse(int[] b)
+
+// Shuffle the two arrays like a deck of cards.  Return a new
+// array that has the contents of a and b interleaved.
+// precondition: a.length == b.length
+// input: a = [ x y z ... w ]
+//        b = [ c d e ... f ]
+// output: [x c y d z e ... w f ]
+int[] shuffle(int[] a, int[] b)
+
+// Return the first index i for which b[i] == x, or return -1
+// if x does not occur in b.
+int find(int[] b, int x)
+
+// Find the index of the smallest element in the array b.
+// If multiple elements share the smallest value, return the 
+// index of the first one.
+int findSmallest(int[] b)
+
+// Find the index of the smallest element in b[h:k]
+int findSmallest(int[] b, int h, int k)
+
+// Rearrange the elements of b so that the smallest one is first.
+// Hint: you only have to actually move 2 elements.
+void smallestUpFront(int[] b)
+
+// Rearrange the elements of b [h:k] so that the smallest one is
+// first -- that is, b[h] contains the smallest element in b[h:k],
+// and the contents of b[0:h] and b[k:b.length] are unotuched.
+void smallestUpFront(int[] b, int h, int k)
+
+// Challenge: Rearrange the elements of b so that they are
+// in ascending order (that is, sort them).  Use the previous
+// method as a building block.
+void selectionSort(int[] b)
+
+// Challenge: Assuming the arrays a and b are sorted in increasing
+// order, return a new array that contains the same elements, also
+// sorted in increasing order.
+int[] merge(int[] a, int[] b)
+
+// Challenge: Return a new array that contains the contents of b,
+// sorted in increasing order.  Use the following recursive idea:
+// To sort b, first sort the left half of b, then the right half, 
+// then merge; the base case is a one-element array, which is 
+// already sorted.
+int[] mergeSort(int[] a)
+
+// Rearrange the elements of b so that the ones < x come first, 
+// followed by the ones that are >= x.
+void partitionValue(int[] b, int x)
+
+// Rearrange the elements of b so that the ones < b[i] come first, 
+// followed by b[i], then the ones that are >= b[i].  By b[i] here
+// I mean the value that is at position i before the method is called.
+void partitionIndex(int[] b, int i)
+
+// Rearrange the elements of b[h:k] so that the ones < b[i] come first, 
+// followed by b[i], then the ones that are >= b[i].  By b[i] here
+// I mean the value that is at position i before the method is called.
+// Leave the rest of the array untouched.
+// Precondition: h <= i < k
+void partitionIndex(int[] b, int i, int h, int k)
+
+// Challenge: Sort b[h:k] in place, using the following 
+// recursive idea: First partition b on any index (maybe the first one).
+// Then sort the left half, then sort the right half.
+void quickSort(int[] b, int h, int k)
+
+// Sort the whole array b in place, using the previous method.
+void quickSort(int[] b)
+
+
+
