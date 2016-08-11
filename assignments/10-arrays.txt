@@ -63,9 +63,9 @@ of an array, right when you create it:
 
 Arrays can hold any type, and this includes other arrays.  So it is perfectly legit to declare an array whose elements are arrays of integers:
 
-   (int[])[] 2dArray;
-   int[][] 2dArray;
-   int 2dArray[][];
+   (int[])[] array2D;
+   int[][] array2D;
+   int array2D[][];
 
 (All three of these mean the same thing.)  These are called two-dimensional arrays, and an important example is an image:
 
@@ -98,7 +98,7 @@ void swap(int[] b, int i, int j)
 //
 // after:  b = [ a x ... y ]
 //               0 1     n
-void pushFront(float[] b, int a)
+void pushFront(int[] b, int a)
 
 // Add all the elements of the array b
 int sum(int[] b)
@@ -125,7 +125,7 @@ int[] toDigits(int n)
 //
 // output: [ ...  a  c   ...   ]
 //         [ 0   i-1 i     n-1 ]
-float[] remove(float[] b, int i)
+int[] remove(int[] b, int i)
 
 // Return a new array that contains the elements of b, in order, that
 // have index >= h and < k.  I'll use the notation b[h:k] for this 
