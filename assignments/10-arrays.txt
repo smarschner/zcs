@@ -209,5 +209,25 @@ void quickSort(int[] b, int h, int k)
 // Sort the whole array b in place, using the previous method.
 void quickSort(int[] b)
 
+Once you are done with the three sorting methods, let's test them to see how
+fast they are.  Remember the very-very first method we called back in
+Assignment 2?  It was System.nanoTime(), and it returns a long that tells you
+the current time in nanoseconds.  It's good for timing how long things take.
+For the last problem of this assignment:
+
+1. Write a little method that makes an array full of random values and sorts
+it using selectionSort.  Call nanoTime() before and after the sort, and
+calculate the time it takes for your sorting method to run.  Experiment to
+find out how big the array has to be so that it takes a barely noticeable
+amount of time, say 1/10 second, to sort it.  Call that size N.
+
+2. Write a method (could be the same one modified, or one that calls the first
+one) that repeats the same exercise for arrays of size N, 2N, 3N, ..., 100N.
+For each size, create an array, fill it with random stuff, and time how long
+it takes to sort it.
+
+3. Take that data into your favorite plot-making tool (Google Sheets?) and
+make a nice graph that illustrates how the running times of these three
+methods change as the size of the array changes.
 
 
