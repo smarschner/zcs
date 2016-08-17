@@ -182,8 +182,8 @@ public class ArrayMethods {
 		for(int x= 0; x<b.length; x++){b[x]= a[x];}
 		int[] c= new int [a.length-b.length];
 		for(int x= 0; x<c.length; x++){c[x]= a[x+b.length];}
-		selectionSort(b);
-		selectionSort(c);
+		if(b.length>1){b= mergeSort(b);}
+		if(c.length>1){c= mergeSort(c);}
 		return merge(b, c);
 	}
 	
@@ -204,8 +204,23 @@ public class ArrayMethods {
 	}
 	
 	public static void partitionIndex(int[] b, int i){
-		partitionValue(b, b[i]);
-	}
+		int[] a= new int[b.length];
+		int beg= 0, end= b.length-1;
+		for(int y= 0; y<b.length; y++){
+			if(b[y]<b[i]){
+				a[beg]= b[y];
+				beg++;
+			}
+			if(b[y]>b[i]){
+				a[end]= b[y];
+				end--;
+			}
+		}
+		while(!(beg>end)){
+			a[beg]= b[i];
+			beg++;
+			}
+		for(int y= 0; y<b.length; y++){b[y]= a[y];}}
 	
 	public static void partitionIndex(int[] b, int i, int h, int k){
 		int[] s= subArray(b, h, k);
@@ -217,12 +232,24 @@ public class ArrayMethods {
 	
 	public static void quickSort(int[] b){
 		int x= b[0];
-		int z= 0;
+		int first= 0, last= 0;
 		partitionIndex(b, 0);
-		for(int y= 0; y<b.length; y++){if(b[y]==x){z= y;}}
-		int[] l= new int[z+1];
-		int[] r= new int[b.length-z];
-
+		for(; first<b.length&&x>b[first]; first++){}
+		for(; last<b.length&&x>=b[last]; last++){}
+		
+		int[] l= new int[first];
+		int[] r= new int[b.length-last];
+		for(int y= 0; y<l.length; y++){l[y]= b[y];}
+		for(int y= 0; y<r.length; y++){r[y]= b[y+last];}
+			
+		if(r.length>1){quickSort(r);}
+		if(l.length>1){quickSort(l);}
+		
+		for(int y= 0; y<b.length; y++){
+			if(y<l.length){b[y]= l[y];}
+			else{if(y>=last){b[y]= r[y-last];}
+			else{b[y]= x;}}			
+		}
 	}
 
 
