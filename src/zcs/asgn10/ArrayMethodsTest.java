@@ -95,17 +95,21 @@ public class ArrayMethodsTest {
 		int [] ii= new int[] {3, 1, 3, 9, 5};
 		assertArrayEquals(hh, ii);		
 		
-//		int [] jj= new int[] {3, 5, 9, 1, 3};	
-//		ArrayMethods.partitionIndex(jj, 0);
-//		for(int ë : jj){System.out.print(ë);}
+//		int [] jj= new int[] {5, 2, 2};
+//		System.out.println(ArrayMethods.partitionIndex(jj, 0, 0, jj.length));
+//		for(int ë : jj){System.out.print(ë);}	
 		
 //		int [] kk= new int[] {3, 5, 9, 1, 3, 6, 8, 9, 2, 5, 6, 6, 7, 4, 2, 1};	
 //		ArrayMethods.partitionIndex(kk, 0, 3, 7);
 //		for(int ll : kk){System.out.print(ll);}
 		
-		int [] mm= new int[] {5, 1, 3, 2, 8, 6, 5, 2, 4, 7, 9, 0, 2, 4, 7, 1, 8, 1};	
-		ArrayMethods.quickSort(mm);
-		for(int ë : mm){System.out.print(ë);}
+//		int [] mm= new int[] {5, 1, 3, 2, 8, 6, 5, 2, 5, 7, 2, 9};	
+//		ArrayMethods.quickSort(mm);
+//		for(int ë : mm){System.out.print(ë);}
+	
+		int [] nn= new int[] {5, 1, 3, 2, 8, 6, 5, 2, 5, 7, 2, 9};	
+		ArrayMethods.oldSort(nn);
+		for(int ë : nn){System.out.print(ë);}
 
 	}
 
