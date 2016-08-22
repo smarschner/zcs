@@ -42,7 +42,9 @@ dropdown menu under the green run button), click on that dropdown and choose
 run from this menu (and you can remove things from the menu if you don't need
 them any more and they are cluttering up your UI).  The command line arguments
 are one of those; select the program you are interested in, go to the
-"arguments" tab, and enter arguments in the top box.
+"arguments" tab, and enter arguments in the top box.  Multiple arguments are
+separated by spaces, and arguments containing spaces can be enclosed in
+quotes.
 
 Assignment:
 
