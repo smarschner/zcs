@@ -1,6 +1,7 @@
 package zcs.asgn12;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -45,10 +46,14 @@ public class Graphics2DExampleApp extends GraphicsApp {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(4.0f));
+			g2.setPaint(new Color(150, 170, 255));
+			g2.fill(new Ellipse2D.Double(80., 100., 200., 200.));
+			g2.setPaint(new Color(0, 0, 0));
 			drawLineFan(g2, 180., 200., 90., 50);		
-			g2.draw(new Ellipse2D.Double(80., 100., 200., 200.));
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.draw(new Ellipse2D.Double(320., 100., 200., 200.));
+			g2.setPaint(new Color(150, 170, 255));
+			g2.fill(new Ellipse2D.Double(320., 100., 200., 200.));
+			g2.setPaint(new Color(0, 0, 0));
 			drawLineFan(g2, 420., 200., 90., 50);				
 			try {
 				BufferedImage img = ImageIO.read(new File("images/heart.png"));
