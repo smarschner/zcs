@@ -16,7 +16,7 @@ perpendicular to a line through a point.  Rather than letting the user create
 points with the other tools selected (as GeoGebra does), I think it is simpler
 to make the user select the two items that the new item depends on, then click
 the tool to create it.  So to create a line through two points, you create two
-points, select the both, and click the line tool, or to create a point at the
+points, select them both, and click the line tool, or to create a point at the
 intersection of two lines, you create the two lines, select them, and click
 the intersection-point tool.
 
@@ -55,13 +55,13 @@ Here are some methods you should define in that hierarchy:
 	// Draw this item using the given graphics context
 	//   abstract in Item, defined in Point and Line because
 	//   all points and all lines are drawn in the same way
-	Item.draw(Graphics2D g2, int panelWidth, int panelHeight)
+	void Item.draw(Graphics2D g2, int panelWidth, int panelHeight)
 
 	// Update this item because the items it depends on may have changed
 	//   abstract in Item, still abstract in Point and Line, defined in specific 
 	//   subclasses because each subclass updates in its own way.  IndependentPoint.update 
 	//   can do nothing, since independent points don't depend on anything.
-	Item.update()
+	void Item.update()
 
 	// Tell whether a point is close to this item (for selecting with mouse clicks)
 	//   abstract in Item, defined in Point and Line
@@ -247,6 +247,10 @@ One more thing:
 
 	This translates as "don't draw my lines with all those jaggy stair-steps
 	please."
+
+	There is an example program called Graphics2DExampleApp that illustrates
+	the use of Graphics2D to draw with floating-point coordinates and
+	antialiasing, as well as different linestyles and colors.
 
 OK, I think that is all I have to say for this one.  It's pretty open ended so
 you may well run into questions, which I'm happy to answer.
