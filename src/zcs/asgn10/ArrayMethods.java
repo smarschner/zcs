@@ -3,8 +3,7 @@ package zcs.asgn10;
 public class ArrayMethods {
 	public static void swap(int[] b, int i, int j){
 		int x= b[i];
-		int z= b[j];
-		b[i]= z;
+		b[i]= b[j];
 		b[j]= x;
 	}
 	
@@ -182,8 +181,8 @@ public class ArrayMethods {
 		for(int x= 0; x<b.length; x++){b[x]= a[x];}
 		int[] c= new int [a.length-b.length];
 		for(int x= 0; x<c.length; x++){c[x]= a[x+b.length];}
-		selectionSort(b);
-		selectionSort(c);
+		if(b.length>1){b= mergeSort(b);}
+		if(c.length>1){c= mergeSort(c);}
 		return merge(b, c);
 	}
 	
@@ -203,26 +202,69 @@ public class ArrayMethods {
 		for(int y= 0; y<b.length; y++){b[y]= a[y];}
 	}
 	
-	public static void partitionIndex(int[] b, int i){
-		partitionValue(b, b[i]);
+	public static int partitionIndex(int[] b, int i, int h, int k){
+		swap(b, h, i);
+		int j=h, e= k-1;
+		while(j<e){
+			if(b[j+1]<b[j]){swap(b,j,j+1);j++;}
+			else{swap(b,e,j+1);e--;}
+		}
+		return j;
 	}
 	
-	public static void partitionIndex(int[] b, int i, int h, int k){
-		int[] s= subArray(b, h, k);
-		partitionValue(s, b[i]);
-		for(int y= 0; y<b.length; y++){
-			if(y>=h&&y<k){b[y]= s[y-h];}
+	public static void quickSort(int[] b, int h, int k){
+		if(k-h>1){
+			int i= partitionIndex(b,h,h,k);
+			quickSort(b, h, i);
+			quickSort(b, i+1, k);
 		}
 	}
 	
-	public static void quickSort(int[] b){
+	public static void oldPartitionIndex(int[] b, int i){
+		int[] a= new int[b.length];
+		int beg= 0, end= b.length-1;
+		for(int y= 0; y<b.length; y++){
+			if(b[y]<b[i]){
+				a[beg]= b[y];
+				beg++;
+			}
+			if(b[y]>b[i]){
+				a[end]= b[y];
+				end--;
+			}
+		}
+		while(!(beg>end)){
+			a[beg]= b[i];
+			beg++;
+			}
+		for(int y= 0; y<b.length; y++){b[y]= a[y];}
+	}
+	
+	
+	public static void oldSort(int[] b){
 		int x= b[0];
-		int z= 0;
-		partitionIndex(b, 0);
-		for(int y= 0; y<b.length; y++){if(b[y]==x){z= y;}}
-		int[] l= new int[z+1];
-		int[] r= new int[b.length-z];
-
+		int first= 0, last= 0;
+		oldPartitionIndex(b, 0);
+		for(; first<b.length&&x>b[first]; first++){}
+		for(; last<b.length&&x>=b[last]; last++){}
+		
+		int[] l= new int[first];
+		int[] r= new int[b.length-last];
+		for(int y= 0; y<l.length; y++){l[y]= b[y];}
+		for(int y= 0; y<r.length; y++){r[y]= b[y+last];}
+			
+		if(r.length>1){oldSort(r);}
+		if(l.length>1){oldSort(l);}
+		
+		for(int y= 0; y<b.length; y++){
+			if(y<l.length){b[y]= l[y];}
+			else{if(y>=last){b[y]= r[y-last];}
+			else{b[y]= x;}}
+		}
+	}
+	
+	public static void quickSort(int[]b){
+		quickSort(b, 0, b.length);
 	}
 
 

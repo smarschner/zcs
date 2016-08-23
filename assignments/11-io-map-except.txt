@@ -1,0 +1,110 @@
+File I/O, Maps, and Exceptions
+
+First a little reading.
+
+I have a sense you are not a fan of the style of the Gries book, which
+sometimes likes to explain things a lot (too much?) in a slow and not always
+straightforward way.  The other book we have is very different -- extremely to
+the point, and very thorough, if sometimes a little formal and dense.  But I'd
+say give it a try -- I think you know enough generally about Java to make
+sense of it, and I'm curious to hear what you think of it.  I'm happy to help
+decode any bits that are confusing.
+
+1. Read about Statements in Java in a Nutshell, starting from p.43 at
+"Statements" and ending on p.54 at the end of "the return statement".  Skip
+"synchronized".  This part covers things you already know about (except the
+case statement, which is good to have heard about), but will fill in some
+useful details (like break and continue).
+
+2. Read about exceptions in both Gries (Ch. 10) and in Java in a Nutshell
+(p.55 "the throw statement" -- p.60 "finally").  Focus on whichever one you
+like best.
+
+3. To learn about File I/O, read this tutorial:
+https://docs.oracle.com/javase/tutorial/essential/io/index.html, but just the
+"I/O Streams" part up through "Buffered Streams".  The main point is to be
+able to open, read, and write files line by line.
+
+4. To learn about Maps, take a look at a couple of pages: 
+   http://www.tutorialspoint.com/java/java_map_interface.htm
+   https://docs.oracle.com/javase/8/docs/api/java/util/Map.html
+   http://www.sergiy.ca/how-to-iterate-over-a-map-in-java
+
+5. Read about command line arguments:
+   https://docs.oracle.com/javase/tutorial/essential/environment/cmdLineArgs.html
+
+This page talks about passing command line arguments when running the program
+using the "java" command in the terminal.  Since you're normally using Eclipse
+to run your program, there is another way to pass command line arguments.
+After you have run the program at least once (so that it appears in the
+dropdown menu under the green run button), click on that dropdown and choose
+"Run Configurations".  This lets you set various options for how programs are
+run from this menu (and you can remove things from the menu if you don't need
+them any more and they are cluttering up your UI).  The command line arguments
+are one of those; select the program you are interested in, go to the
+"arguments" tab, and enter arguments in the top box.  Multiple arguments are
+separated by spaces, and arguments containing spaces can be enclosed in
+quotes.
+
+Assignment:
+
+Make a program that keeps track of personal best times for a XC team. There
+are two input files.  The first one is the team roster, and it has a list of
+the people on the team with their personal record times. (Would you keep track
+of this separately per course, in reality?  Or just one time?  For this
+assignment let's assume each person just has one best time.)  The file has a
+separate line for each runner, and each line has the person's name in "Last,
+First" order, followed by a colon, followed by the time in minutes and seconds
+(to the tenth).  Spaces around the names or before or after the time are
+allowed (and ignored), and it is OK for the times to have more or fewer digits
+of precision, but they will be written back out rounded to the tenth. For
+instance:
+
+Doe, Jane: 25:34.3
+Granger, Hermione: 26:01.3
+McGee, Speedy: 19:34.2
+
+A second file contains the results for a particular race.  It is in exactly
+the same format.
+
+The job of the program is to read the two files, detect when a runner has
+broken their personal record, and write out an updated roster that reflects
+the new best times.  The filenames should be specified using three arguments
+to the main program: the roster (to be read), the race times, and the filename
+to write the new roster to.  (In reality I suppose you might write back to the
+same roster but for testing it will be much better not to change the file.)
+
+For this assignment, use a HashMap to store a mapping from people to their
+times.  (You could use two maps, one to hold PRs and one to hold race times,
+which would let you share the file reading code more neatly, or you could just
+store the PRs and update them as you read the race times, which by some
+argument is simpler.)  Also, make use of exceptions to ensure your program is
+well behaved even in the face of wrong input.  For instance, these problems
+should result in error messages:
+
+* Either of the two input files doesn't exist or can't be read
+* The output file can't be written
+* There is something wrong with the format of either input file
+* There is a time for a person who is not on the team
+
+In all cases your program should write a helpful error message and exit 
+gracefully after closing all files it has opened.
+
+To make this a better exercise in exceptions, when there is a choice of how to
+detect errors, you should do it with exceptions rather than some other way.
+For instance, you could check that a number is actually a number, using an if
+statement to handle the error, but you should instead just try to parse the
+string to a number, and handle the NumberFormatException that results if it's
+actually not a number.
+
+Some things to test:
+
+* A runner whose name appears with a space between the first and last name in
+the race file but not in the roster (should still be found as long as the
+first name and last name are the same)
+
+* Lines with no colon at all
+
+* Files where the last line ends with or without a newline character
+
+* Times with too many or too few colons

@@ -1,0 +1,253 @@
+Assignment 12: Zeo-gebra
+
+This last assignment is another kind of drawing program, but less conventional
+than the rectangles one.  The idea is to make something that works like
+GeoGebra, in that you can not only draw objects but also draw objects that
+depend on other ones.  To make this a good exercise in classes and
+polymorphism I'll dictate the design of the class hierarchy, but as usual the
+details are up to you.
+
+At a minimum the program should support 4 kinds of "drawing items" (it's too
+confusing to call them objects or shapes so items it is).  First, there are
+points that are placed at user-controlled positions.  Then there are 3 kinds
+of items that depend on other items: an infinite line through two points; a
+point at the intersection of two lines; a midpoint between two points; and a
+perpendicular to a line through a point.  Rather than letting the user create
+points with the other tools selected (as GeoGebra does), I think it is simpler
+to make the user select the two items that the new item depends on, then click
+the tool to create it.  So to create a line through two points, you create two
+points, select the both, and click the line tool, or to create a point at the
+intersection of two lines, you create the two lines, select them, and click
+the intersection-point tool.
+
+The class hierarchy should look like this:
+
+Item*
+  Point*
+    IndependentPoint
+    IntersectionPoint
+    MidPoint
+    [ReflectedPoint, ...]
+  Line*
+    LineThrough2
+    PerpendicularLine
+    [ParallelLine, AngleBisectorLine, ...]
+
+Starred classes are abstract (e.g. you can't have just a Point; every Point
+has to be an instance of one of the subclasses). You should feel free to add
+more features if you want; it is simple to add features as long as you stick
+with ones where there is a guaranteed unique answer.  For instance, you could
+have circles with a center and a point on the circle, or a center and a
+tangent line, but a point at the intersection of a circle and a line is tricky
+because there might be two intersections or there might be none.
+
+Here are some fields (member variables) you should define:
+
+	Point should have doubles x and y (its coordinates).
+	Line should have doubles a, b, and c (coefficients, see below).
+	IntersectionPoint should have two lines l1 and l2 that it's the intersection of.
+	MidPoint should have two points p1 and p2 that it's the midpoint between.
+	LineThrough2 should have two points p1 and p2 that define it.
+	PerpendicularLine should have a point p and a line l.
+
+Here are some methods you should define in that hierarchy:
+
+	// Draw this item using the given graphics context
+	//   abstract in Item, defined in Point and Line because
+	//   all points and all lines are drawn in the same way
+	Item.draw(Graphics2D g2, int panelWidth, int panelHeight)
+
+	// Update this item because the items it depends on may have changed
+	//   abstract in Item, still abstract in Point and Line, defined in specific 
+	//   subclasses because each subclass updates in its own way.  IndependentPoint.update 
+	//   can do nothing, since independent points don't depend on anything.
+	Item.update()
+
+	// Tell whether a point is close to this item (for selecting with mouse clicks)
+	//   abstract in Item, defined in Point and Line
+	boolean Item.hit(double x, double y)
+
+With things set up this way your drawing is just a collection of Items, and
+you can draw them all, or update them all, without worrying about what type
+they are.  The same goes for selecting items, or updating them: the code that
+checks for hits, adds and removes from the selection, etc, all can operate
+strictly in terms of the methods of Item without worrying about what
+particular kinds of items they are.
+
+I would also make a static function in each of the dependent classes that looks like:
+
+	// Can an IntersectionPoint be created from this list of items?  This is true
+	// if and only if the selection contains exactly two items and both are lines.
+	static boolean IntersectionPoint.canCreate(List<Item> selection)
+
+	// Can a PerpendicularLine be created from this list of items?  This is true
+	// if and only if the selection contains exactly two items and one is a point 
+	// and the other is a line.
+	static boolean IntersectionPoint.canCreate(List<Item> selection)
+
+To implement these methods you will need the instanceof operator.
+
+Recommended UI mechanics:
+
+	* when nothing is selected, clicking on nothing (I mean not on an existing
+	item) creates an independent point, making it selected.
+
+	* when something is selected, clicking on nothing clears the selection.
+
+	* clicking on an existing item adds it to the selection if it is selected, or
+	removes it if not.
+
+	* clicking and dragging on a selected independent point moves that point and
+	causes the whole drawing to update accordingly.
+
+	* when the right combination of items is selected, a tool lights up (e.g.
+	intersection point tool lights up when you have 2 lines selected). Clicking
+	on the tool creates a new item of that type that depends on the items you had 
+	selected, and the new item becomes selected.
+
+	* typing the delete key deletes the selected items and any items that depend 
+	on them.
+
+On how to represent lines:
+
+	We usually think of a line as being something like
+
+		y = m x + b
+
+	and in this way you could represent a line with two numbers m and b (by
+	which I mean you could have those numbers be what you store in a Line
+	object).  The problem with this is that it doesn't work for vertical lines
+	(no value of m will work).  For lines closer to vertical I could use the
+	form
+
+		x = k y + c
+
+	but it would be a pain to have to keep switching back and forth between
+	the two ways of representing a line.  A neater solution is to represent
+	lines with thres numbers instead:
+
+		a x + b y + c = 0
+
+	This is redundant, because the line represented by a, b, and c can also be
+	represented by 2a, 2b, 2c, or indeed any multiple of a, b, and c -- there are
+	infinitely many ways to write any single line. But this is OK, we can just
+	pick one, and it's nice that there are no special cases for vertical (b = 0)
+	or horizontal (a = 0) lines.
+
+	It also makes the formulas for intersections of lines and lines through points
+	work out pretty neatly.  If I have two points x1,y1 and x2,y2, what is the
+	line between them?  Well, I'm looking for a, b, and c for which
+
+		a x1 + b y1 + c = 0   (point x1,y1 is on the line) and 
+		a x2 + b y2 + c = 0   (point x2,y2 is also on the line)
+
+	Subtract these equations and you get
+
+	    a (x1 - x2) = b (y2 - y1)
+
+	If I choose a and b so that this is true, I can solve for c using either
+	of the original equations.  To solve this equation, a and b just have to
+	be in the ratio (y2 - y1) : (x1 - x2).  I choose a = (y2 - y1) and b = (x1
+	- x2), and then I can find c using the first equation:
+
+		(y2 - y1) x1 + (x1 - x2) y1 + c = 0
+		x1 y2 - x2 y1 + c = 0
+		c = x2 y1 - x1 y2
+
+	You can check for yourself (go on, make sure I didn't make a typo) that
+	you get the same result if you find c using the second equation instead.
+	(It's no surprise that I had to make some kind of arbitrary choice, since
+	we noted before that this representation of lines with 3 numbers is
+	redundant.)
+
+	OK, now going the other way: if I have two lines a1,b1,c1 and a2,b2,c2, what
+	is the intersection?  This one is a little more standard problem because
+	there's only one solution: representing points with x and y is not redundant.
+	I'll set up the problem and let you solve it.  You want to solve a system of
+	two equations:
+
+		a1 x + b1 y + c1 = 0   (point is on the first line) and 
+		a2 x + b2 y + c2 = 0   (point is also on the second line)
+
+	Solve this system of two linear equations in two unknowns, and you have
+	your formulas for the intersection of two lines.  They should be kind of
+	reminiscent of the line-through-points formula we just derived.
+
+	The formulas for midpoints and parallel lines are left as an exercise for the
+	student :-).
+
+On drawing infinite lines:
+
+    It's all well and good that we can find the coeficients a, b, c for a
+    line, but the call to draw it needs two endpoints.  We want to see the
+    whole section of line that passes through the window, so we could find the
+    two points where the line intersects the edge of the window and use those
+    as the endpoints for drawing.
+
+    That would work fine, but it's kind of a lot of if statements to work out
+    the intersections with all the four sides of the rectangle; you can make
+    it simpler by observing that it's fine for the endpoint to be outside the
+    window; the Java graphics system knows how to draw just the part of the
+    line that's in view.  So here is a scheme that worked for me: if the line
+    is mostly horizontal (-1 < slope < 1 in the math-class sense), use the
+    intersections with the sides of the window (the lines x = 0 and x = width)
+    as the endpoints.  Otherwise (abs(slope) > 1), use the intersections with
+    y = 0 and y = height instead.  You can work out the intersections of the
+    line a x + b y + c = 0 with these vertical and horizontal lines; you'll
+    find the formulas are quite simple.  To decide between the two cases, you
+    can compare a and b -- you don't want to actually compute the slope (which
+    is, mumble, divide by a, move y to the other side, ..., -a/b) because then
+    you will divide by zero if the line is vertical (b == 0).
+
+    This means the code for drawing lines has to know the size of the window,
+    which is why I made the width and height arguments to draw() above.
+
+On updating:
+
+	When the user moves a point, any items that depend on that point need to
+	be updated, and then after that, any items that depend on those items need
+	to be updated, and so on.  But if you keep the items in a list in the same
+	order they were created, there is an easy way to do this: just update all
+	the items in order, not worrying about which ones actually are going to
+	change, whenever anything moves.  You could be more clever and efficient,
+	but these updates are fast and there will not be a million objects, so
+	there's not really much need.
+
+	What kind of Collection should you use to hold the items in the drawing?
+
+One more thing:
+
+	For this program it is nice if you can use floating-point coordinates to
+	draw your lines and points, because if they have to be rounded to integers
+	they will look kind of jittery.  Unfortunately the Graphics class doesn't
+	support this.  However, there is a newer and fancier graphics class, which
+	is implemented by the class Graphics2D, which is a subclass of Graphics.
+	The Graphics object that you get from Java these days is always an
+	instance of Graphics2D (as well as an instance of Graphics).
+
+	https://docs.oracle.com/javase/8/docs/api/java/awt/Graphics2D.html
+
+	When you read that, you don't need to worry about the coordinate systems
+	business; if you just let them be, the coordinate system is the same as in
+	Graphics.  The main difference is how you draw things: you have to create
+	a Shape and pass it to Graphics2D.draw() or Graphics2D.fill().  For
+	instance:
+
+		Graphics2D g2 = (Graphics2D) g;
+		g2.draw(new Line2D.Double(x1, y1, x2, y2));
+		g2.draw(new Rectangle.Double(x, y, w, h));
+
+	You can set the line width/color/style using the setStroke method and the
+	fill color using the setPaint method.
+
+	To make things look nicer, when you first get hold of the Graphics2D
+	instance in paintComponent, do this:
+
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+	This translates as "don't draw my lines with all those jaggy stair-steps
+	please."
+
+OK, I think that is all I have to say for this one.  It's pretty open ended so
+you may well run into questions, which I'm happy to answer.
+
