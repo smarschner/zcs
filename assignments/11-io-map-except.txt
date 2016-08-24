@@ -1,4 +1,4 @@
-File I/O, Maps, and Exceptions
+zFile I/O, Maps, and Exceptions
 
 First a little reading.
 
@@ -33,6 +33,11 @@ able to open, read, and write files line by line.
 5. Read about command line arguments:
    https://docs.oracle.com/javase/tutorial/essential/environment/cmdLineArgs.html
 
+		how does the while loop progress (IO)
+		how is try/finally related to catch
+		what constitutes an 'appliction'
+		
+		
 This page talks about passing command line arguments when running the program
 using the "java" command in the terminal.  Since you're normally using Eclipse
 to run your program, there is another way to pass command line arguments.

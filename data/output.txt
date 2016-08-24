@@ -1,0 +1,11 @@
+Granger,Hermione : 24:43.45
+Flitwick,Filius : 25:43.45
+Hagrid,Rubeus : 25:43.45
+Weasley,Ron : 25:43.45
+Malfoy,Draco : 25:43.45
+Potter,Harry : 25:3.45
+Riddle,Tom : 26:32.35
+Snape,Severus : 25:43.45
+Longbottom,Neville : 25:43.45
+Weasley,Ginny : 25:43.45
+McGonagall,Minerva : 25:43.45
